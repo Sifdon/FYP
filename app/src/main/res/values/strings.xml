@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Test2</string>
+    <string name="action_settings">Settings</string>
+    <string name="facebook_app_id">568615749955254</string>
+    <string name="title_activity_map_results">Map</string>
+    <string name="no_location_data_provided">no location data provided</string>
+    <string name="service_not_available">service not available</string>
+    <string name="invalid_lat_long_used">invalid lat long used</string>
+    <string name="no_address_found">no address found</string>
+    <string name="address_found">address found</string>
+    <string name="no_geocoder_available">no geocoder available</string>
+</resources>
