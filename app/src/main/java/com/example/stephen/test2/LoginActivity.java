@@ -4,15 +4,19 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.media.Image;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TabHost;
 import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -68,18 +72,71 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     //final Firebase ref = new Firebase("https://test2-polly.firebaseio.com/");
 
 
+    //private FragmentTabHost mTabHost;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-
-
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_login);
         Firebase.setAndroidContext(this);
+
+
+
+        //----------------------------------------------implementing tabs------------------------------------------------------
+        /*
+        Resources res = getResources();
+
+        mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
+        mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
+
+        mTabHost.addTab(mTabHost.newTabSpec("MapsPeople").setIndicator("", res.getDrawable(R.drawable.icon_people_config)),
+                FragmentStackSupport.MapResultsActivity.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("Chats").setIndicator("", res.getDrawable(R.drawable.icon_messages_config)),
+                LoaderCursorSupport.ChatActivity.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("Settings").setIndicator("", res.getDrawable(R.drawable.icon_settings_config)),
+                LoaderCustomSupport.SettingsActivity.class, null);
+
+
+        /*
+
+        //implementeing tabhost for app
+        // maps tab
+        Intent intentmapspeople = new Intent().setClass(this, MapResultsActivity.class);
+        TabHost.TabSpec tabSpecPeople = tabHost
+                .newTabSpec("MapsPeople")
+                .setIndicator("", res.getDrawable(R.drawable.icon_people_config))
+                .setContent(intentmapspeople);
+
+        // chat tab
+        Intent intentchat = new Intent().setClass(this, ChatActivity.class);
+        TabHost.TabSpec tabSpecChat = tabHost
+                .newTabSpec("Apple")
+                .setIndicator("", res.getDrawable(R.drawable.icon_messages_config))
+                .setContent(intentchat);
+
+        // settings tab
+        Intent intentsettings = new Intent().setClass(this, SettingsActivity.class);
+        TabHost.TabSpec tabSpecSettings = tabHost
+                .newTabSpec("Windows")
+                .setIndicator("", res.getDrawable(R.drawable.icon_settings_config))
+                .setContent(intentsettings);
+
+
+        // add all tabs
+        tabHost.addTab(tabSpecPeople);
+        tabHost.addTab(tabSpecChat);
+        tabHost.addTab(tabSpecSettings);
+
+        //set mapspeople tab as default (zero based)
+        tabHost.setCurrentTab(0);
+        */
+        //-----------------------------------------------end implementing tabs--------------------------
+
+
+
         //adding location updates to this activity-----------------------------
-
-
         buildGoogleApiClient();
         /*
         createLocationRequest();
@@ -115,12 +172,29 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         callbackManager = CallbackManager.Factory.create();
         //MultiDex.install(this);
         final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");
-        final Button btn = (Button) findViewById(R.id.mapbutton);
 
+        final Button btn = (Button) findViewById(R.id.mapbutton);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, MapResultsActivity.class));
+            }
+        });
+
+        final Button bttn = (Button) findViewById(R.id.searchbutton);
+        bttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, SearchActivity.class));
+            }
+        });
+
+        final Button btttn = (Button) findViewById(R.id.Createbutton);
+
+        btttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, CreateProfileActivity.class));
             }
         });
 
@@ -169,10 +243,15 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                 if (snapshot.getValue() != null) {
                                                     Log.d(TAG, "USER EXISTS");
 
-                                                    //user exists move to search
+                                                    //startActivity(new Intent(LoginActivity.this, MapResultsActivity.class));
+                                                    //user exists move to mapresults
                                                 } else {
                                                     //user does not exist create user in db.
+                                                    //then move to search settings
                                                     Log.d(TAG, "USER DOES NOT EXIST, CREATING ONE NOW");
+
+                                                    //User needs to fill in what they are e.g skills/user
+                                                    //startActivity(new Intent(LoginActivity.this, CreateProfileActivity.class));
 
                                                     class User {
                                                         //profile Picture
@@ -201,9 +280,11 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                         }
                                                     }
 
+                                                    //final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                                                     Firebase Ref = ref.child("users").child("" + finalID);
                                                     User Fobject = new User("," + lat, "," + lon, "" + finalFName);
                                                     Ref.setValue(Fobject);
+
 
 
                                                 }
@@ -474,12 +555,15 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         lat = String.valueOf(location.getLatitude());
         lon = String.valueOf(location.getLongitude());
         //updateUI();
-        Log.d(TAG, lat +", " + lon);
-        //updating lat and lon in database on locationchanged
-        final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");
-        Firebase Ref = ref.child("users");
-        Ref.child("lat").setValue("" + lat);
-        Ref.child("long").setValue("" + lon);
+        Log.d(TAG, lat + ", " + lon);
+        //if stops writing to db without authorisation
+        if(AccessToken.getCurrentAccessToken() != null) {
+            //updating lat and lon in database on locationchanged
+            final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");
+            Firebase Ref = ref.child("users");
+            Ref.child("lat").setValue("" + lat);
+            Ref.child("long").setValue("" + lon);
+        }
 
     }
 
