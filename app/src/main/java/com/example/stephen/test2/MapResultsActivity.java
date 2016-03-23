@@ -42,14 +42,14 @@ import com.google.android.gms.location.LocationRequest;
 public class MapResultsActivity extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, LocationListener, OnConnectionFailedListener, ResultCallback<LocationSettingsResult> {
 
     private GoogleMap mMap;
-    protected GoogleApiClient mGoogleApiClient;
+    //protected GoogleApiClient mGoogleApiClient;
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
-    protected Location mLastLocation;
+    //protected Location mLastLocation;
     private BroadcastReceiver mResultReceiver;
-    protected LocationRequest mLocationRequest;
-    protected LocationSettingsRequest mLocationSettingsRequest;
-    protected Location mCurrentLocation;
-    protected Boolean mRequestingLocationUpdates;
+    //protected LocationRequest mLocationRequest;
+    //protected LocationSettingsRequest mLocationSettingsRequest;
+    //protected Location mCurrentLocation;
+    //protected Boolean mRequestingLocationUpdates;
     //protected Boolean LocationAsked;
     public static final String TAG = MapResultsActivity.class.getSimpleName();
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
@@ -67,21 +67,27 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
 
 
 
+
+
+
+
         //mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
                // LOCATION_REFRESH_DISTANCE, mLocationListener);
 
+        /*
 
         buildGoogleApiClient();
         startIntentService();
         createLocationRequest();
         buildLocationSettingsRequest();
-        checkLocationSettings();
+        checkLocationSettings();*/
 
 
-        mRequestingLocationUpdates = true;
+        //mRequestingLocationUpdates = true;
 
+        /*
         mResultReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -89,7 +95,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
             }
         };
         IntentFilter filter = new IntentFilter("com.example.stephen.test2.SendBroadcast");
-        registerReceiver(mResultReceiver, filter);
+        registerReceiver(mResultReceiver, filter);*/
         //mResultReceiver.setReceiver(this);
 
 
@@ -144,7 +150,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
 
 
 
-
+/*
 
     protected synchronized void buildGoogleApiClient() {
         Log.i(TAG, "Building GoogleApiClient");
@@ -155,12 +161,12 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                 .build();
     }
 
-
+*/
     protected void onStart() {
-        mGoogleApiClient.connect();
+        //mGoogleApiClient.connect();
         super.onStart();
     }
-
+/*
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
@@ -181,7 +187,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                         mLocationSettingsRequest
                 );
         result.setResultCallback(this);
-    }
+    }*/
 /*
     private final LocationListener mLocationListener = new LocationListener() {
 
@@ -198,6 +204,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     public void onConnected(Bundle connectionHint) {
 
 
+        /*
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
@@ -223,10 +230,11 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                 //return;
             }
 
-        }
+        }*/
 
     }
 
+    /*
     protected void startIntentService() {
         Intent intent = new Intent(this, FetchAddressIntentService.class);
         intent.putExtra(Constants.RECEIVER, (Parcelable) mResultReceiver);
@@ -235,7 +243,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         intent.setAction("com.example.stephen.test2.SendBroadcast");
         //intent.putExtra("Foo", "Bar");
         sendBroadcast(intent);
-    }
+    }*/
 
     @Override
     public void onConnectionFailed( ConnectionResult connectionResult) {
@@ -247,6 +255,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
 
     }
 
+    /*
     protected void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -262,34 +271,36 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                 mGoogleApiClient,
                 mLocationRequest, this
         );
-    }
+    }*/
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(mResultReceiver);
-        stopLocationUpdates();
+        //unregisterReceiver(mResultReceiver);
+        //stopLocationUpdates();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        /*
         if (mGoogleApiClient.isConnected() && !mRequestingLocationUpdates) {
             startLocationUpdates();
-        }
+        }*/
 
 
     }
 
+    /*
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
-    }
+    }*/
 
 
 
     protected void onStop() {
-        mGoogleApiClient.disconnect();
+        //mGoogleApiClient.disconnect();
         super.onStop();
     }
 
@@ -315,7 +326,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
                 Log.i(TAG, "All location settings are satisfied.");
-                startLocationUpdates();
+                //startLocationUpdates();
                 break;
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                 Log.i(TAG, "Location settings are not satisfied. Show the user a dialog to" +
@@ -345,7 +356,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                 switch (resultCode) {
                     case Activity.RESULT_OK:
                         Log.i(TAG, "User agreed to make required location settings changes.");
-                        startLocationUpdates();
+                        //startLocationUpdates();
                         break;
                     case Activity.RESULT_CANCELED:
                         Log.i(TAG, "User chose not to make required location settings changes.");
@@ -358,10 +369,11 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     public void onLocationChanged(final Location location) {
         //your code here
-        mCurrentLocation = location;
+        //mCurrentLocation = location;
     }
 
 
+    /*
 
     public class MyReceiver extends BroadcastReceiver {
         public MyReceiver() {
@@ -373,7 +385,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
             Toast.makeText(context, "Action: " + intent.getAction(), Toast.LENGTH_SHORT).show();
             Log.i(TAG, "Intent Received");
         }
-    }
+    }*/
 
 
 

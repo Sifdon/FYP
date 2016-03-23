@@ -7,43 +7,52 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.stephen.test2.SearchActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:id="@+id/donebutton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
     <TextView
         android:id="@+id/RadiusTextID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:text="Radius"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/donebutton"
+        android:layout_alignStart="@+id/checkBoxCarpenter">
     </TextView>
 
     <TextView
         android:id="@+id/InitialRadiusTextID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
         android:text="0km"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/SeekbarID"
+        android:layout_alignParentStart="true">
     </TextView>
 
     <TextView
         android:id="@+id/FinalRadiusTextID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:text="10km"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/SeekbarID"
+        android:layout_alignParentEnd="true">
     </TextView>
 
     <SeekBar
         android:id="@+id/SeekbarID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="26dp"
-        android:max="10" >
+        android:layout_marginTop="50dp"
+        android:max="10"
+        android:layout_below="@+id/donebutton"
+        android:layout_alignParentStart="true">
     </SeekBar>
 
     <CheckBox

@@ -1,5 +1,6 @@
 package com.example.stephen.test2;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -40,8 +42,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
         //setSupportActionBar(toolbar);
 
 
-        //Done button like create profile
-        //once pressed sends to maps where queries start
+
 
         RadiusBar = (SeekBar)findViewById(R.id.SeekbarID); // make seekbar object
         RadiusBar.setOnSeekBarChangeListener(this);
@@ -65,6 +66,18 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
 
             }
         });
+        //Done button like create profile
+        //once pressed sends to maps where queries start
+        final Button done = (Button) findViewById(R.id.donebutton);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // if radius and checkbox not null start intent
+
+                //startActivity(new Intent(SearchActivity.this, MapResultsActivity.class));
+            }
+        });
+
 
     }
     @Override

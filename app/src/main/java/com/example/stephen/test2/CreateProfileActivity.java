@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -23,10 +24,15 @@ import com.firebase.client.ValueEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CreateProfileActivity extends LoginActivity {
 
-    private CheckBox checkBoxCarpenter;
+    private CheckBox checkBoxCarpenter, checkBoxLocksmith;
     private TextView NameText;
+    String ID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +41,15 @@ public class CreateProfileActivity extends LoginActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+
+
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(final JSONObject Fobject, GraphResponse response) {
 
-                        String ID = null;
+                        ID = null;
                         try {
                             ID = Fobject.getString("id");
                         } catch (JSONException e) {
@@ -62,6 +70,8 @@ public class CreateProfileActivity extends LoginActivity {
                         //Image ProfilePic = Fobject.get
                         //final String ID = response.toString();
 
+
+
                     }
                 });
         Bundle parameters = new Bundle();
@@ -69,12 +79,16 @@ public class CreateProfileActivity extends LoginActivity {
         request.setParameters(parameters);
         request.executeAsync();
 
+
+
+
+
 /*
         NameText = (TextView) findViewById(R.id.NameID);
         NameText.setText("" + FName);*/
 
 
-        addListenerOnCarpenter();//see if listener for multiple checkboxes
+        //addListenerOnCarpenter();//see if listener for multiple checkboxes
         //error checking if done pressed and checkbox not clicked
         //pull all from facebook again
 
@@ -94,8 +108,11 @@ public class CreateProfileActivity extends LoginActivity {
                 //when done button is finished write to database all at once
 
                 //where id = id insert skills/user of app to user
+                //if(Skill1){}
+                //--------------------------------------------------come back-------------------------------------------
 
-
+                //addCarpenter();
+                addListenerOnCarpenter();
 
                 //if write to db is successful then go to search
                 //startActivity(new Intent(CreateProfileActivity.this, SearchActivity.class));
@@ -103,21 +120,51 @@ public class CreateProfileActivity extends LoginActivity {
         });
 
     }
+
+
+
     public void addListenerOnCarpenter() {
         checkBoxCarpenter = (CheckBox) findViewById(R.id.checkBoxCarpenter);
         checkBoxCarpenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //is checkbox checked?
-                if (((CheckBox) v).isChecked()) {
+                if (((checkBoxCarpenter.isChecked()))) {
 
-
-                    String Skill1 = "Carpenter";
-
+                    //updates user profile with selected skills
+                    String Carpenter = "Carpenter";
+                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+                    final Firebase ref = userRef.child("" + ID);
+                    Map<String, Object> Skill = new HashMap<String, Object>();
+                    Skill.put("Skill:", "" + Carpenter);
+                    ref.updateChildren(Skill);
                 }
             }
         });
+
+        checkBoxLocksmith = (CheckBox) findViewById(R.id.checkBoxLocksmith);
+        checkBoxLocksmith.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxLocksmith.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Locksmith = "Locksmith";
+                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+                    final Firebase ref = userRef.child("" + ID);
+                    Map<String, Object> Skill = new HashMap<String, Object>();
+                    Skill.put("Skill:", "" + Locksmith);
+                    ref.updateChildren(Skill);
+                }
+            }
+        });
+
+
+
     }
+
+
 
 
 }
