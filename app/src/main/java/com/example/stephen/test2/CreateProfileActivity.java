@@ -1,6 +1,8 @@
 package com.example.stephen.test2;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -24,13 +27,17 @@ import com.firebase.client.ValueEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CreateProfileActivity extends LoginActivity {
 
-    private CheckBox checkBoxCarpenter, checkBoxLocksmith;
+    private CheckBox checkBoxCarpenter, checkBoxLocksmith, checkBoxGlazer, checkBoxPlumber, checkBoxElectrician, checkBoxGardener, checkBoxMechanic;
     private TextView NameText;
+    private ImageView Profiler;
+    byte pro;
     String ID;
 
 
@@ -67,8 +74,9 @@ public class CreateProfileActivity extends LoginActivity {
 
                         NameText = (TextView) findViewById(R.id.NameID);
                         NameText.setText("" + FName);
-                        //Image ProfilePic = Fobject.get
+
                         //final String ID = response.toString();
+
 
 
 
@@ -78,6 +86,24 @@ public class CreateProfileActivity extends LoginActivity {
         parameters.putString("fields", "id, name, picture");//----------picture hasnt been added yet---------
         request.setParameters(parameters);
         request.executeAsync();
+
+        //addProfiler();
+
+
+        /*
+        public Bitmap getUserPic(String ID) {
+            String imageURL;
+            Bitmap bitmap = null;
+            Log.d(TAG, "Loading Picture");
+            imageURL = "http://graph.facebook.com/"+ID+"/picture?type=small";
+            try {
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent());
+            } catch (Exception e) {
+                Log.d("TAG", "Loading Picture FAILED");
+                e.printStackTrace();
+            }
+            return bitmap;
+        }*/
 
 
 
@@ -108,11 +134,10 @@ public class CreateProfileActivity extends LoginActivity {
                 //when done button is finished write to database all at once
 
                 //where id = id insert skills/user of app to user
-                //if(Skill1){}
                 //--------------------------------------------------come back-------------------------------------------
 
                 //addCarpenter();
-                addListenerOnCarpenter();
+                addListenerOnCheckboxes();
 
                 //if write to db is successful then go to search
                 //startActivity(new Intent(CreateProfileActivity.this, SearchActivity.class));
@@ -121,9 +146,14 @@ public class CreateProfileActivity extends LoginActivity {
 
     }
 
+    //public void addProfiler(){
 
 
-    public void addListenerOnCarpenter() {
+    //}
+
+
+
+    public void addListenerOnCheckboxes() {
         checkBoxCarpenter = (CheckBox) findViewById(R.id.checkBoxCarpenter);
         checkBoxCarpenter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +190,95 @@ public class CreateProfileActivity extends LoginActivity {
             }
         });
 
+        checkBoxGlazer = (CheckBox) findViewById(R.id.checkBoxGlazer);
+        checkBoxGlazer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxGlazer.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Glazer = "Glazer";
+                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+                    final Firebase ref = userRef.child("" + ID);
+                    Map<String, Object> Skill = new HashMap<String, Object>();
+                    Skill.put("Skill:", "" + Glazer);
+                    ref.updateChildren(Skill);
+                }
+            }
+        });
+
+        checkBoxPlumber = (CheckBox) findViewById(R.id.checkBoxPlumber);
+        checkBoxPlumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxPlumber.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Plumber = "Plumber";
+                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+                    final Firebase ref = userRef.child("" + ID);
+                    Map<String, Object> Skill = new HashMap<String, Object>();
+                    Skill.put("Skill:", "" + Plumber);
+                    ref.updateChildren(Skill);
+                }
+            }
+        });
+
+        checkBoxElectrician = (CheckBox) findViewById(R.id.checkBoxElectrician);
+        checkBoxElectrician.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxElectrician.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Electrician = "Electrician";
+                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+                    final Firebase ref = userRef.child("" + ID);
+                    Map<String, Object> Skill = new HashMap<String, Object>();
+                    Skill.put("Skill:", "" + Electrician);
+                    ref.updateChildren(Skill);
+                }
+            }
+        });
+
+        checkBoxGardener = (CheckBox) findViewById(R.id.checkBoxGardener);
+        checkBoxGardener.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxGardener.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Gardener = "Gardener";
+                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+                    final Firebase ref = userRef.child("" + ID);
+                    Map<String, Object> Skill = new HashMap<String, Object>();
+                    Skill.put("Skill:", "" + Gardener);
+                    ref.updateChildren(Skill);
+                }
+            }
+        });
+
+        checkBoxMechanic = (CheckBox) findViewById(R.id.checkBoxMechanic);
+        checkBoxMechanic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxMechanic.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Mechanic = "Mechanic";
+                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+                    final Firebase ref = userRef.child("" + ID);
+                    Map<String, Object> Skill = new HashMap<String, Object>();
+                    Skill.put("Skill:", "" + Mechanic);
+                    ref.updateChildren(Skill);
+                }
+            }
+        });
 
 
     }
