@@ -25,7 +25,9 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarChangeListener {
@@ -34,16 +36,18 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
     private SeekBar RadiusBar;
     private TextView RadiusText;
     private CheckBox checkBoxCarpenter, checkBoxLocksmith, checkBoxGlazer, checkBoxPlumber, checkBoxElectrician, checkBoxGardener, checkBoxMechanic;
-
+    public static List<String> list = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        addListenerOnCheckboxes();
+
         //addListenerOnCarpenter();
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //Toolpbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
 
@@ -79,8 +83,8 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
             public void onClick(View v) {
                 // if radius and checkbox not null start intent
 
-                addListenerOnCheckboxes();;
-                //startActivity(new Intent(SearchActivity.this, MapResultsActivity.class));
+                //addListenerOnCheckboxes();
+                startActivity(new Intent(SearchActivity.this, MapResultsActivity.class));
             }
         });
 
@@ -109,6 +113,8 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
     }
 
     public void addListenerOnCheckboxes() {
+
+
         checkBoxCarpenter = (CheckBox) findViewById(R.id.checkBoxCarpenter);
         checkBoxCarpenter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +124,7 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
 
                     //updates user profile with selected skills
                     String Carpenter = "Carpenter";
+                    list.add("" + Carpenter);
 
                 }
             }
@@ -132,6 +139,7 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
 
                     //updates user profile with selected skills
                     String Locksmith = "Locksmith";
+                    list.add("" + Locksmith);
 
                 }
             }
@@ -146,6 +154,7 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
 
                     //updates user profile with selected skills
                     String Glazer = "Glazer";
+                    list.add("" + Glazer);
 
                 }
             }
@@ -160,6 +169,7 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
 
                     //updates user profile with selected skills
                     String Plumber = "Plumber";
+                    list.add("" + Plumber);
 
                 }
             }
@@ -174,6 +184,7 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
 
                     //updates user profile with selected skills
                     String Electrician = "Electrician";
+                    list.add("" + Electrician);
 
                 }
             }
@@ -188,6 +199,7 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
 
                     //updates user profile with selected skills
                     String Gardener = "Gardener";
+                    list.add("" + Gardener);
 
                 }
             }
@@ -202,7 +214,8 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
 
                     //updates user profile with selected skills
                     String Mechanic = "Mechanic";
-                   
+                    list.add("" + Mechanic);
+
                 }
             }
         });

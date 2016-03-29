@@ -39,7 +39,7 @@ public class CreateProfileActivity extends LoginActivity {
     private TextView NameText;
     private ImageView Profiler;
     byte pro;
-    String ID;
+    String ID, bash;
 
 
     @Override
@@ -48,6 +48,7 @@ public class CreateProfileActivity extends LoginActivity {
         setContentView(R.layout.activity_create_profile);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+        addListenerOnCheckboxes();
 
 
 
@@ -137,9 +138,10 @@ public class CreateProfileActivity extends LoginActivity {
                 //where id = id insert skills/user of app to user
                 //--------------------------------------------------come back-------------------------------------------
 
-                addListenerOnCheckboxes();
+                //addListenerOnCheckboxes();
                 getPhone();
                 getBio();
+                //bash = "bash";
 
 
 
@@ -158,12 +160,13 @@ public class CreateProfileActivity extends LoginActivity {
 
         EditText PhoneNo = (EditText) findViewById(R.id.Phone);
         String PhoneNumber = PhoneNo.getText().toString();
+        //if (PhoneNumber != null && bash != null)
         if (PhoneNumber != null)
         {
         final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
         final Firebase ref = userRef.child("" + ID);
         Map<String, Object> Phone = new HashMap<String, Object>();
-        Phone.put("Phone:", "" + PhoneNumber);
+        Phone.put("Phone", "" + PhoneNumber);
         ref.updateChildren(Phone);
         }
     }
@@ -176,7 +179,7 @@ public class CreateProfileActivity extends LoginActivity {
             final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
             final Firebase ref = userRef.child("" + ID);
             Map<String, Object> Biog = new HashMap<String, Object>();
-            Biog.put("Phone:", "" + Bio2);
+            Biog.put("Bio", "" + Bio2);
             ref.updateChildren(Biog);
         }
     }
@@ -196,7 +199,7 @@ public class CreateProfileActivity extends LoginActivity {
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill:", "" + Carpenter);
+                    Skill.put("Skill", "" + Carpenter);
                     ref.updateChildren(Skill);
                 }
             }
@@ -214,7 +217,7 @@ public class CreateProfileActivity extends LoginActivity {
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill:", "" + Locksmith);
+                    Skill.put("Skill", "" + Locksmith);
                     ref.updateChildren(Skill);
                 }
             }
@@ -232,7 +235,7 @@ public class CreateProfileActivity extends LoginActivity {
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill:", "" + Glazer);
+                    Skill.put("Skill", "" + Glazer);
                     ref.updateChildren(Skill);
                 }
             }
@@ -250,7 +253,7 @@ public class CreateProfileActivity extends LoginActivity {
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill:", "" + Plumber);
+                    Skill.put("Skill", "" + Plumber);
                     ref.updateChildren(Skill);
                 }
             }
@@ -268,7 +271,7 @@ public class CreateProfileActivity extends LoginActivity {
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill:", "" + Electrician);
+                    Skill.put("Skill", "" + Electrician);
                     ref.updateChildren(Skill);
                 }
             }
@@ -286,7 +289,7 @@ public class CreateProfileActivity extends LoginActivity {
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill:", "" + Gardener);
+                    Skill.put("Skill", "" + Gardener);
                     ref.updateChildren(Skill);
                 }
             }
@@ -304,7 +307,7 @@ public class CreateProfileActivity extends LoginActivity {
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill:", "" + Mechanic);
+                    Skill.put("Skill", "" + Mechanic);
                     ref.updateChildren(Skill);
                 }
             }

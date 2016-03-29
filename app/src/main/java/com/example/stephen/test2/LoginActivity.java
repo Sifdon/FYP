@@ -243,15 +243,15 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                 if (snapshot.getValue() != null) {
                                                     Log.d(TAG, "USER EXISTS");
 
-                                                    //startActivity(new Intent(LoginActivity.this, MapResultsActivity.class));
-                                                    //user exists move to mapresults
+                                                    startActivity(new Intent(LoginActivity.this, SearchActivity.class));
+                                                    //user exists move to search
                                                 } else {
                                                     //user does not exist create user in db.
                                                     //then move to search settings
                                                     Log.d(TAG, "USER DOES NOT EXIST, CREATING ONE NOW");
 
                                                     //User needs to fill in what they are e.g skills/user
-                                                    //startActivity(new Intent(LoginActivity.this, CreateProfileActivity.class));
+                                                    startActivity(new Intent(LoginActivity.this, CreateProfileActivity.class));
 
                                                     class User {
                                                         //profile Picture

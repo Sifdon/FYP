@@ -15,10 +15,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -35,6 +41,10 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.common.base.Joiner;
+
+import java.util.HashMap;
+import java.util.Map;
 
 //import static com.example.stephen.test2.MapResultsActivity.AddressResultReceiver.*;
 
@@ -54,6 +64,8 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String TAG = MapResultsActivity.class.getSimpleName();
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     //protected LocationManager mLocationManager;
+    //String joined = TextUtils.join(", ", SearchActivity.list);
+    String joined = Joiner.on("\t").join(SearchActivity.list);
 
 
     @Override
@@ -64,6 +76,87 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        Log.d(TAG, "" + joined);
+
+        //select user where skill = skill
+        //then check if there within the radius
+        //if so display them
+
+
+
+        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+
+        Query queryRef = userRef.orderByChild("Skill").equalTo("" + joined);
+        queryRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
+                //System.out.println(snapshot.getKey());
+                Log.d(TAG, "BBABABABABBAABBABBABABAB");
+                System.out.println(snapshot.getKey());
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+        /*
+
+        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+
+        //final Firebase ref = userRef.child("" + ID);
+        //Map<String, Object> Biog = new HashMap<String, Object>();
+
+        Query queryRef = userRef.orderByChild("Skill");
+        queryRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
+
+
+
+                //DinosaurFacts facts = snapshot.getValue(DinosaurFacts.class);
+                //System.out.println(snapshot.getKey() + " was " + facts.getHeight() + " meters tall");
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        */
 
 
 
