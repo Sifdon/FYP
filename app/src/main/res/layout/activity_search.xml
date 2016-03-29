@@ -65,5 +65,54 @@
         android:layout_marginTop="145dp"
         android:checked="false" />
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Locksmith"
+        android:id="@+id/checkBoxLocksmith"
+        android:checked="false"
+        android:layout_below="@+id/checkBoxCarpenter"
+        android:layout_alignStart="@+id/checkBoxCarpenter" />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Glazer"
+        android:id="@+id/checkBoxGlazer"
+        android:checked="false"
+        android:layout_below="@+id/checkBoxLocksmith"
+        android:layout_alignStart="@+id/checkBoxLocksmith" />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Plumber"
+        android:id="@+id/checkBoxPlumber"
+        android:checked="false"
+        android:layout_below="@+id/checkBoxGlazer"
+        android:layout_alignStart="@+id/checkBoxLocksmith"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Electrician"
+        android:id="@+id/checkBoxElectrician"
+        android:checked="false"
+        android:layout_below="@+id/checkBoxMechanic"
+        android:layout_alignStart="@+id/checkBoxLocksmith"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gardener"
+        android:id="@+id/checkBoxGardener"
+        android:checked="false"
+        android:layout_below="@+id/checkBoxPlumber"
+        android:layout_alignStart="@+id/checkBoxLocksmith"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mechanic"
+        android:id="@+id/checkBoxMechanic"
+        android:checked="false"
+        android:layout_below="@+id/checkBoxGardener"
+        android:layout_alignStart="@+id/checkBoxLocksmith"/>
+
 
 </RelativeLayout>

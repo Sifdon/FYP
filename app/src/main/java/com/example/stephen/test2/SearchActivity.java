@@ -23,12 +23,17 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
+import com.firebase.client.Firebase;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarChangeListener {
 
     public static final String TAG = SearchActivity.class.getSimpleName();
     private SeekBar RadiusBar;
     private TextView RadiusText;
-    private CheckBox checkBoxCarpenter;
+    private CheckBox checkBoxCarpenter, checkBoxLocksmith, checkBoxGlazer, checkBoxPlumber, checkBoxElectrician, checkBoxGardener, checkBoxMechanic;
 
 
     @Override
@@ -36,7 +41,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        addListenerOnCarpenter();
+        //addListenerOnCarpenter();
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -74,6 +79,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
             public void onClick(View v) {
                 // if radius and checkbox not null start intent
 
+                addListenerOnCheckboxes();;
                 //startActivity(new Intent(SearchActivity.this, MapResultsActivity.class));
             }
         });
@@ -102,17 +108,106 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
 
     }
 
-    public void addListenerOnCarpenter() {
+    public void addListenerOnCheckboxes() {
         checkBoxCarpenter = (CheckBox) findViewById(R.id.checkBoxCarpenter);
         checkBoxCarpenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //is checkbox checked?
-                if (((CheckBox) v).isChecked()) {
+                if (((checkBoxCarpenter.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Carpenter = "Carpenter";
 
                 }
             }
         });
+
+        checkBoxLocksmith = (CheckBox) findViewById(R.id.checkBoxLocksmith);
+        checkBoxLocksmith.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxLocksmith.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Locksmith = "Locksmith";
+
+                }
+            }
+        });
+
+        checkBoxGlazer = (CheckBox) findViewById(R.id.checkBoxGlazer);
+        checkBoxGlazer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxGlazer.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Glazer = "Glazer";
+
+                }
+            }
+        });
+
+        checkBoxPlumber = (CheckBox) findViewById(R.id.checkBoxPlumber);
+        checkBoxPlumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxPlumber.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Plumber = "Plumber";
+
+                }
+            }
+        });
+
+        checkBoxElectrician = (CheckBox) findViewById(R.id.checkBoxElectrician);
+        checkBoxElectrician.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxElectrician.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Electrician = "Electrician";
+
+                }
+            }
+        });
+
+        checkBoxGardener = (CheckBox) findViewById(R.id.checkBoxGardener);
+        checkBoxGardener.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxGardener.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Gardener = "Gardener";
+
+                }
+            }
+        });
+
+        checkBoxMechanic = (CheckBox) findViewById(R.id.checkBoxMechanic);
+        checkBoxMechanic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is checkbox checked?
+                if (((checkBoxMechanic.isChecked()))) {
+
+                    //updates user profile with selected skills
+                    String Mechanic = "Mechanic";
+                   
+                }
+            }
+        });
+
+
     }
 
 

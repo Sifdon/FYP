@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -136,11 +137,14 @@ public class CreateProfileActivity extends LoginActivity {
                 //where id = id insert skills/user of app to user
                 //--------------------------------------------------come back-------------------------------------------
 
-                //addCarpenter();
                 addListenerOnCheckboxes();
+                getPhone();
+                getBio();
+
+
 
                 //if write to db is successful then go to search
-                //startActivity(new Intent(CreateProfileActivity.this, SearchActivity.class));
+                startActivity(new Intent(CreateProfileActivity.this, SearchActivity.class));
             }
         });
 
@@ -150,6 +154,32 @@ public class CreateProfileActivity extends LoginActivity {
 
 
     //}
+    public void getPhone(){
+
+        EditText PhoneNo = (EditText) findViewById(R.id.Phone);
+        String PhoneNumber = PhoneNo.getText().toString();
+        if (PhoneNumber != null)
+        {
+        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+        final Firebase ref = userRef.child("" + ID);
+        Map<String, Object> Phone = new HashMap<String, Object>();
+        Phone.put("Phone:", "" + PhoneNumber);
+        ref.updateChildren(Phone);
+        }
+    }
+
+    public void getBio(){
+
+        EditText Bio = (EditText) findViewById(R.id.Bio);
+        String Bio2 = Bio.getText().toString();
+        if (Bio2 != null) {
+            final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+            final Firebase ref = userRef.child("" + ID);
+            Map<String, Object> Biog = new HashMap<String, Object>();
+            Biog.put("Phone:", "" + Bio2);
+            ref.updateChildren(Biog);
+        }
+    }
 
 
 
