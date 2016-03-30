@@ -25,6 +25,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -43,7 +44,9 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.common.base.Joiner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //import static com.example.stephen.test2.MapResultsActivity.AddressResultReceiver.*;
@@ -67,6 +70,9 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     //String joined = TextUtils.join(", ", SearchActivity.list);
     String joined = Joiner.on("\t").join(SearchActivity.list);
 
+    //public static List<String> list2 = new ArrayList<String>();
+    //SearchActivity.list = list2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +84,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         mapFragment.getMapAsync(this);
 
 
-        Log.d(TAG, "" + joined);
+        //Log.d(TAG, "" + joined);
 
         //select user where skill = skill
         //then check if there within the radius
@@ -87,14 +93,61 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
 
 
         final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+        //final Firebase Ref = userRef.child("users").child("");
 
-        Query queryRef = userRef.orderByChild("Skill").equalTo("" + joined);
+        //String userid = userRef.child("users/Skills").getKey(String.class);
+        //DataSnapshot elections = userRef.child("Elections");
+        //for (DataSnapshot election : elections.getChildren()) {
+            //String electionName = election.child("Name").getValue(String.class);
+
+
+
+        //Query queryRef = userRef.orderByChild("Skills").equalTo("", joined);
+        //Query queryRef = userRef.orderByChild("Skills").equalTo("" + SearchActivity.list);
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot child : snapshot.getChildren()) {
+
+                    //List<String> bop = (ArrayList<String>) snapshot.getValue();
+                    Map<String, Object> bop = (HashMap<String,Object>) snapshot.getValue();
+
+                    //List<Object> values = (List<Object>) bop.values();
+                   // System.out.println("Skills: " + values);
+                    //System.out.println("Skills: " + bop.containsValue(SearchActivity.list));
+                    System.out.println("Skills: " + bop.get("Skills"));
+
+                    Log.d(TAG, "BBABABABABBAABBABBABABAB");
+
+
+                    /*
+                    String pollName = poll.child("Name").getValue(String.class);
+                    DataSnapshot elections = poll.child("Elections");
+                    for (DataSnapshot election : elections.getChildren()) {
+                        String electionName = election.child("Name").getValue(String.class);
+                    }*/
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+
+            }
+        });
+
+        //Query queryRef = userRef.orderByChild("Skills").equalTo("", joined);
+        /*
+        Query queryRef = userRef.orderByChild("Skills").equalTo("" + SearchActivity.list);
         queryRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChild) {
                 //System.out.println(snapshot.getKey());
+                //Map<String, Object> Q = (Map<String, Object>) snapshot.getValue();
                 Log.d(TAG, "BBABABABABBAABBABBABABAB");
-                System.out.println(snapshot.getKey());
+                System.out.println((Ref));
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -116,7 +169,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
 
             }
         });
-
+*/
 
         /*
 

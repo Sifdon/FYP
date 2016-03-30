@@ -27,8 +27,8 @@
         android:layout_height="wrap_content"
         android:text="Name"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_below="@+id/imageView"
-        android:layout_alignStart="@+id/checkBoxCarpenter">
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/imageView">
     </TextView>
 
     <CheckBox
@@ -37,10 +37,8 @@
         android:text="Carpenter"
         android:id="@+id/checkBoxCarpenter"
         android:checked="false"
-        android:layout_marginTop="53dp"
-        android:layout_below="@+id/imageView"
-        android:layout_toStartOf="@+id/donebutton"
-        android:layout_marginEnd="70dp" />
+        android:layout_below="@+id/NameID"
+        android:layout_alignStart="@+id/NameID" />
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,7 +46,7 @@
         android:id="@+id/checkBoxLocksmith"
         android:checked="false"
         android:layout_below="@+id/checkBoxCarpenter"
-        android:layout_alignStart="@+id/checkBoxCarpenter" />
+        android:layout_alignStart="@+id/NameID" />
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,7 +54,7 @@
         android:id="@+id/checkBoxGlazer"
         android:checked="false"
         android:layout_below="@+id/checkBoxLocksmith"
-        android:layout_alignStart="@+id/checkBoxLocksmith" />
+        android:layout_alignStart="@+id/NameID" />
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,7 +93,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:layout_below="@+id/donebutton"
-        android:layout_toStartOf="@+id/NameID"
+        android:layout_toStartOf="@+id/donebutton"
         android:layout_marginEnd="23dp" />
 
     <EditText
@@ -106,8 +104,7 @@
         android:ems="10"
         android:id="@+id/Phone"
         android:layout_below="@+id/checkBoxElectrician"
-        android:layout_alignStart="@+id/checkBoxElectrician"
-        android:layout_marginTop="34dp" />
+        android:layout_alignStart="@+id/checkBoxElectrician" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -117,7 +114,7 @@
         android:ems="10"
         android:id="@+id/Bio"
         android:layout_below="@+id/Phone"
-        android:layout_toEndOf="@+id/imageView"
+        android:layout_alignStart="@+id/NameID"
         android:layout_marginTop="30dp" />
 
 

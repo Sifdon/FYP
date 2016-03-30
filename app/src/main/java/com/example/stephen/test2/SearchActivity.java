@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarChangeListener {
+public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     public static final String TAG = SearchActivity.class.getSimpleName();
     private SeekBar RadiusBar;
@@ -126,6 +126,9 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
                     String Carpenter = "Carpenter";
                     list.add("" + Carpenter);
 
+                } else {
+                    list.remove("Carpenter");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -140,7 +143,9 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
                     //updates user profile with selected skills
                     String Locksmith = "Locksmith";
                     list.add("" + Locksmith);
-
+                }else {
+                    list.remove("Locksmith");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -155,7 +160,9 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
                     //updates user profile with selected skills
                     String Glazer = "Glazer";
                     list.add("" + Glazer);
-
+                }else {
+                    list.remove("Glazer");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -171,6 +178,9 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
                     String Plumber = "Plumber";
                     list.add("" + Plumber);
 
+                }else {
+                    list.remove("Plumber");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -186,6 +196,9 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
                     String Electrician = "Electrician";
                     list.add("" + Electrician);
 
+                } else {
+                    list.remove("Electrician");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -201,6 +214,9 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
                     String Gardener = "Gardener";
                     list.add("" + Gardener);
 
+                }else {
+                    list.remove("Gardener");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -216,6 +232,9 @@ public class SearchActivity extends LoginActivity implements SeekBar.OnSeekBarCh
                     String Mechanic = "Mechanic";
                     list.add("" + Mechanic);
 
+                }else {
+                    list.remove("Mechanic");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });

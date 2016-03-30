@@ -3,7 +3,9 @@ package com.example.stephen.test2;
 import android.Manifest;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.Resources;
 import android.location.Location;
 import android.media.Image;
@@ -13,6 +15,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +50,8 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,11 +70,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     public Location mLastLocation;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     String lat, lon;
-    //String ID;
-    //private AuthData authData;
-    //intent intent = new intent(this);
-    //Private Firebase ref;
-    //final Firebase ref = new Firebase("https://test2-polly.firebaseio.com/");
 
 
     //private FragmentTabHost mTabHost;
@@ -77,10 +77,27 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_login);
         Firebase.setAndroidContext(this);
+
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.example.stephen.test2",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
 
 
 
@@ -237,6 +254,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                         final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                                         final String finalID = ID;
                                         final String finalFName = FName;
+                                        //final String Skills = Skills[];
                                         userRef.child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot snapshot) {
@@ -258,12 +276,14 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                         private String Lat;
                                                         private String Long;
                                                         private String fullName;
+                                                        //private String Skills [];
                                                         public User() {}
 
                                                         public User(String Lat, String Long, String fullName) {
                                                             this.Lat = Lat;
                                                             this.Long = Long;
                                                             this.fullName = fullName;
+                                                            //this.Skills = Skills;
 
                                                         }
 
@@ -278,11 +298,15 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                         public String getFullName() {
                                                             return fullName;
                                                         }
+
+                                                        //public String[] getSkills() {
+                                                        //    return Skills;
+                                                        //}
                                                     }
 
                                                     //final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                                                     Firebase Ref = ref.child("users").child("" + finalID);
-                                                    User Fobject = new User("," + lat, "," + lon, "" + finalFName);
+                                                    User Fobject = new User("" + lat, "" + lon, "" + finalFName);
                                                     Ref.setValue(Fobject);
 
 
@@ -340,6 +364,11 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     @Override
     public void onResume() {
         super.onResume();
+        /*
+        if(AccessToken.getCurrentAccessToken() != null) {
+            //updating lat and lon in database on locationchanged
+
+        }
         /*
         if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
             startLocationUpdates();
@@ -557,7 +586,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         //updateUI();
         Log.d(TAG, lat + ", " + lon);
         //if stops writing to db without authorisation
-        if(AccessToken.getCurrentAccessToken() != null) {
+        if(AccessToken.ACCESS_TOKEN_KEY != null) {
             //updating lat and lon in database on locationchanged
             final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");
             Firebase Ref = ref.child("users");

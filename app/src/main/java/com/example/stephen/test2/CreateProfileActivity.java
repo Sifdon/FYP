@@ -24,22 +24,29 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.common.base.Joiner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class CreateProfileActivity extends LoginActivity {
+public class CreateProfileActivity extends AppCompatActivity {
 
     private CheckBox checkBoxCarpenter, checkBoxLocksmith, checkBoxGlazer, checkBoxPlumber, checkBoxElectrician, checkBoxGardener, checkBoxMechanic;
     private TextView NameText;
     private ImageView Profiler;
+    Bitmap fbitmap;
     byte pro;
-    String ID, bash;
+    String ID;
+    String bash;
+    public static List<String> list = new ArrayList<String>();
+    public static final String TAG = CreateProfileActivity.class.getSimpleName();
 
 
     @Override
@@ -49,6 +56,8 @@ public class CreateProfileActivity extends LoginActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         addListenerOnCheckboxes();
+
+
 
 
 
@@ -85,36 +94,13 @@ public class CreateProfileActivity extends LoginActivity {
                     }
                 });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id, name, picture");//----------picture hasnt been added yet---------
+        parameters.putString("fields", "id, name");
         request.setParameters(parameters);
         request.executeAsync();
 
-        //addProfiler();
-
-
-        /*
-        public Bitmap getUserPic(String ID) {
-            String imageURL;
-            Bitmap bitmap = null;
-            Log.d(TAG, "Loading Picture");
-            imageURL = "http://graph.facebook.com/"+ID+"/picture?type=small";
-            try {
-                bitmap = BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent());
-            } catch (Exception e) {
-                Log.d("TAG", "Loading Picture FAILED");
-                e.printStackTrace();
-            }
-            return bitmap;
-        }*/
-
-
-
-
-
-/*
-        NameText = (TextView) findViewById(R.id.NameID);
-        NameText.setText("" + FName);*/
-
+        getUserPic();
+        Profiler = (ImageView) findViewById(R.id.imageView);
+        Profiler.setImageBitmap(fbitmap);
 
         //addListenerOnCarpenter();//see if listener for multiple checkboxes
         //error checking if done pressed and checkbox not clicked
@@ -142,6 +128,7 @@ public class CreateProfileActivity extends LoginActivity {
                 getPhone();
                 getBio();
                 //bash = "bash";
+                writeskillstodatabase();
 
 
 
@@ -152,7 +139,23 @@ public class CreateProfileActivity extends LoginActivity {
 
     }
 
-    //public void addProfiler(){
+    public Bitmap getUserPic() {///////-----------------this isnt working---------------------
+        String imageURL;
+        fbitmap = null;
+        Log.d(TAG, "Loading Picture");
+        imageURL = "http://graph.facebook.com/"+ID+"/picture?type=small";
+        try {
+            fbitmap = BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent());
+        } catch (Exception e) {
+            Log.d(TAG, "Loading Picture FAILED");
+            e.printStackTrace();
+        }
+        return fbitmap;
+        //bitmap = Profiler;
+
+    }
+
+
 
 
     //}
@@ -195,12 +198,18 @@ public class CreateProfileActivity extends LoginActivity {
                 if (((checkBoxCarpenter.isChecked()))) {
 
                     //updates user profile with selected skills
+                    /*
                     String Carpenter = "Carpenter";
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
                     Skill.put("Skill", "" + Carpenter);
-                    ref.updateChildren(Skill);
+                    ref.updateChildren(Skill);*/
+                    String Carpenter = "Carpenter";
+                    list.add("" + Carpenter);
+                }else {
+                    list.remove("Carpenter");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -213,12 +222,18 @@ public class CreateProfileActivity extends LoginActivity {
                 if (((checkBoxLocksmith.isChecked()))) {
 
                     //updates user profile with selected skills
+                    /*
                     String Locksmith = "Locksmith";
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
                     Skill.put("Skill", "" + Locksmith);
-                    ref.updateChildren(Skill);
+                    ref.updateChildren(Skill);*/
+                    String Locksmith = "Locksmith";
+                    list.add("" + Locksmith);
+                }else {
+                    list.remove("Locksmith");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -231,12 +246,18 @@ public class CreateProfileActivity extends LoginActivity {
                 if (((checkBoxGlazer.isChecked()))) {
 
                     //updates user profile with selected skills
+                    /*
                     String Glazer = "Glazer";
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
                     Skill.put("Skill", "" + Glazer);
-                    ref.updateChildren(Skill);
+                    ref.updateChildren(Skill);*/
+                    String Glazer = "Glazer";
+                    list.add("" + Glazer);
+                }else {
+                    list.remove("Glazer");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -249,12 +270,18 @@ public class CreateProfileActivity extends LoginActivity {
                 if (((checkBoxPlumber.isChecked()))) {
 
                     //updates user profile with selected skills
+                    /*
                     String Plumber = "Plumber";
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
                     Skill.put("Skill", "" + Plumber);
-                    ref.updateChildren(Skill);
+                    ref.updateChildren(Skill);*/
+                    String Plumber = "Plumber";
+                    list.add("" + Plumber);
+                } else {
+                    list.remove("Plumber");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -267,12 +294,19 @@ public class CreateProfileActivity extends LoginActivity {
                 if (((checkBoxElectrician.isChecked()))) {
 
                     //updates user profile with selected skills
+                    /*
                     String Electrician = "Electrician";
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
                     Skill.put("Skill", "" + Electrician);
                     ref.updateChildren(Skill);
+                    */
+                    String Electrician = "Electrician";
+                    list.add("" + Electrician);
+                }else {
+                    list.remove("Electrician");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -285,12 +319,18 @@ public class CreateProfileActivity extends LoginActivity {
                 if (((checkBoxGardener.isChecked()))) {
 
                     //updates user profile with selected skills
+                    /*
                     String Gardener = "Gardener";
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
                     Skill.put("Skill", "" + Gardener);
-                    ref.updateChildren(Skill);
+                    ref.updateChildren(Skill);*/
+                    String Gardener = "Gardener";
+                    list.add("" + Gardener);
+                }else {
+                    list.remove("Gardener");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
@@ -303,18 +343,40 @@ public class CreateProfileActivity extends LoginActivity {
                 if (((checkBoxMechanic.isChecked()))) {
 
                     //updates user profile with selected skills
+                    /*
                     String Mechanic = "Mechanic";
                     final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                     final Firebase ref = userRef.child("" + ID);
                     Map<String, Object> Skill = new HashMap<String, Object>();
                     Skill.put("Skill", "" + Mechanic);
-                    ref.updateChildren(Skill);
+                    ref.updateChildren(Skill);*/
+                    String Mechanic = "Mechanic";
+                    list.add("" + Mechanic);
+                } else {
+                    list.remove("Mechanic");
+                    Log.d(TAG, "REMOVED");
                 }
             }
         });
 
 
     }
+
+    public void writeskillstodatabase(){
+
+        //String Skilljoined = Joiner.on(",").join(list);
+
+        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+        final Firebase ref = userRef.child("" + ID);
+        Map<String, Object> Skills = new HashMap<String, Object>();
+        Skills.put("Skills", list);
+        //Skills.put("Skills", "" + Skilljoined);
+        ref.updateChildren(Skills);
+
+
+    }
+
+
 
 
 
