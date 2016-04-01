@@ -15,6 +15,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -38,15 +40,18 @@ import java.util.Map;
 
 public class CreateProfileActivity extends AppCompatActivity {
 
-    private CheckBox checkBoxCarpenter, checkBoxLocksmith, checkBoxGlazer, checkBoxPlumber, checkBoxElectrician, checkBoxGardener, checkBoxMechanic;
+    //private CheckBox checkBoxCarpenter, checkBoxLocksmith, checkBoxGlazer, checkBoxPlumber, checkBoxElectrician, checkBoxGardener, checkBoxMechanic;
     private TextView NameText;
     private ImageView Profiler;
     Bitmap fbitmap;
     byte pro;
     String ID;
-    String bash;
     public static List<String> list = new ArrayList<String>();
     public static final String TAG = CreateProfileActivity.class.getSimpleName();
+    String id;
+    String Skill = null;
+    private RadioGroup radio;
+    private RadioButton Carpenter, Locksmith, Glazer, Plumber, Gardener, Mechanic, Electrician;
 
 
     @Override
@@ -55,7 +60,8 @@ public class CreateProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_profile);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
-        addListenerOnCheckboxes();
+        //addListenerOnCheckboxes();
+        addlistenertoradio();
 
 
 
@@ -120,18 +126,10 @@ public class CreateProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //when done button is finished write to database all at once
-
-                //where id = id insert skills/user of app to user
-                //--------------------------------------------------come back-------------------------------------------
-
                 //addListenerOnCheckboxes();
                 getPhone();
                 getBio();
-                //bash = "bash";
                 writeskillstodatabase();
-
-
-
                 //if write to db is successful then go to search
                 startActivity(new Intent(CreateProfileActivity.this, SearchActivity.class));
             }
@@ -187,7 +185,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         }
     }
 
-
+/*
 
     public void addListenerOnCheckboxes() {
         checkBoxCarpenter = (CheckBox) findViewById(R.id.checkBoxCarpenter);
@@ -197,14 +195,6 @@ public class CreateProfileActivity extends AppCompatActivity {
                 //is checkbox checked?
                 if (((checkBoxCarpenter.isChecked()))) {
 
-                    //updates user profile with selected skills
-                    /*
-                    String Carpenter = "Carpenter";
-                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
-                    final Firebase ref = userRef.child("" + ID);
-                    Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill", "" + Carpenter);
-                    ref.updateChildren(Skill);*/
                     String Carpenter = "Carpenter";
                     list.add("" + Carpenter);
                 }else {
@@ -221,14 +211,6 @@ public class CreateProfileActivity extends AppCompatActivity {
                 //is checkbox checked?
                 if (((checkBoxLocksmith.isChecked()))) {
 
-                    //updates user profile with selected skills
-                    /*
-                    String Locksmith = "Locksmith";
-                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
-                    final Firebase ref = userRef.child("" + ID);
-                    Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill", "" + Locksmith);
-                    ref.updateChildren(Skill);*/
                     String Locksmith = "Locksmith";
                     list.add("" + Locksmith);
                 }else {
@@ -245,14 +227,6 @@ public class CreateProfileActivity extends AppCompatActivity {
                 //is checkbox checked?
                 if (((checkBoxGlazer.isChecked()))) {
 
-                    //updates user profile with selected skills
-                    /*
-                    String Glazer = "Glazer";
-                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
-                    final Firebase ref = userRef.child("" + ID);
-                    Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill", "" + Glazer);
-                    ref.updateChildren(Skill);*/
                     String Glazer = "Glazer";
                     list.add("" + Glazer);
                 }else {
@@ -269,14 +243,6 @@ public class CreateProfileActivity extends AppCompatActivity {
                 //is checkbox checked?
                 if (((checkBoxPlumber.isChecked()))) {
 
-                    //updates user profile with selected skills
-                    /*
-                    String Plumber = "Plumber";
-                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
-                    final Firebase ref = userRef.child("" + ID);
-                    Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill", "" + Plumber);
-                    ref.updateChildren(Skill);*/
                     String Plumber = "Plumber";
                     list.add("" + Plumber);
                 } else {
@@ -293,15 +259,6 @@ public class CreateProfileActivity extends AppCompatActivity {
                 //is checkbox checked?
                 if (((checkBoxElectrician.isChecked()))) {
 
-                    //updates user profile with selected skills
-                    /*
-                    String Electrician = "Electrician";
-                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
-                    final Firebase ref = userRef.child("" + ID);
-                    Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill", "" + Electrician);
-                    ref.updateChildren(Skill);
-                    */
                     String Electrician = "Electrician";
                     list.add("" + Electrician);
                 }else {
@@ -318,14 +275,6 @@ public class CreateProfileActivity extends AppCompatActivity {
                 //is checkbox checked?
                 if (((checkBoxGardener.isChecked()))) {
 
-                    //updates user profile with selected skills
-                    /*
-                    String Gardener = "Gardener";
-                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
-                    final Firebase ref = userRef.child("" + ID);
-                    Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill", "" + Gardener);
-                    ref.updateChildren(Skill);*/
                     String Gardener = "Gardener";
                     list.add("" + Gardener);
                 }else {
@@ -342,14 +291,6 @@ public class CreateProfileActivity extends AppCompatActivity {
                 //is checkbox checked?
                 if (((checkBoxMechanic.isChecked()))) {
 
-                    //updates user profile with selected skills
-                    /*
-                    String Mechanic = "Mechanic";
-                    final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
-                    final Firebase ref = userRef.child("" + ID);
-                    Map<String, Object> Skill = new HashMap<String, Object>();
-                    Skill.put("Skill", "" + Mechanic);
-                    ref.updateChildren(Skill);*/
                     String Mechanic = "Mechanic";
                     list.add("" + Mechanic);
                 } else {
@@ -360,25 +301,66 @@ public class CreateProfileActivity extends AppCompatActivity {
         });
 
 
+    }*/
+
+    public void addlistenertoradio(){
+        radio = (RadioGroup)findViewById(R.id.radioGroup);
+        radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.CarpenterButton){
+                    Skill ="Carpenter";
+                }else if(checkedId == R.id.LocksmithButton){
+                    Skill ="Locksmith";
+                }else if(checkedId == R.id.GlazerButton){
+                    Skill ="Glazer";
+                }else if(checkedId == R.id.PlumberButton){
+                    Skill ="Plumber";
+                }else if(checkedId == R.id.MechanicButton){
+                    Skill ="Mechanic";
+                }else if(checkedId == R.id.ElectricianButton){
+                    Skill ="Electrician";
+                }else if(checkedId == R.id.GardenerButton){
+                    Skill ="Gardener";
+                }
+                Log.d(TAG, "BAAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSSSHHH");
+            }
+        });
     }
 
     public void writeskillstodatabase(){
-
         //String Skilljoined = Joiner.on(",").join(list);
 
-        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
-        final Firebase ref = userRef.child("" + ID);
-        Map<String, Object> Skills = new HashMap<String, Object>();
-        Skills.put("Skills", list);
-        //Skills.put("Skills", "" + Skilljoined);
-        ref.updateChildren(Skills);
+        class Skills extends CreateProfileActivity {
+            public Skills() {
+            }
+            public Skills(String id, String Skill) {
+                this.id = id;
+                this.Skill = Skill;
+            }
+            public String getid() {
+                return id;
+            }
+            public String getSkill() {
+                return Skill;
+            }
+        }
+        Log.d(TAG, "EEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+
+
+        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/");//took out users
+        final Firebase ref = userRef.child("Skills");
+
+        Skills Skillage = new Skills("" + ID, "" + Skill);
+        ref.setValue(Skillage);
+
+        //ref.setValue(Fobject);
+            //Map<String, Object> Skills = new HashMap<String, Object>();
+            //Skills.put("Skills", "" + ID  "" + Skill0);
+            //Skills.put("Skills", "" + Skilljoined);
 
 
     }
-
-
-
-
 
 
 }

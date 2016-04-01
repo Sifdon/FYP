@@ -90,32 +90,33 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         //then check if there within the radius
         //if so display them
 
+        final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/Skills");
+        Query qref = ref.equalTo(String.valueOf(SearchActivity.list));
+        //ref.child("Skills").equalTo(String.valueOf(SearchActivity.list));
 
 
-        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
-        //final Firebase Ref = userRef.child("users").child("");
-
-        //String userid = userRef.child("users/Skills").getKey(String.class);
-        //DataSnapshot elections = userRef.child("Elections");
-        //for (DataSnapshot election : elections.getChildren()) {
-            //String electionName = election.child("Name").getValue(String.class);
+        //final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");
+        //Firebase Ref = ref.child("users").child("/");
+        //Ref.child("Skills").equals(SearchActivity.list);
+        //startat();
 
 
+        //Query Ref = ref.child("users").child("").equalTo("", finalID);
 
         //Query queryRef = userRef.orderByChild("Skills").equalTo("", joined);
         //Query queryRef = userRef.orderByChild("Skills").equalTo("" + SearchActivity.list);
-        userRef.addValueEventListener(new ValueEventListener() {
+        qref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
 
                     //List<String> bop = (ArrayList<String>) snapshot.getValue();
-                    Map<String, Object> bop = (HashMap<String,Object>) snapshot.getValue();
+                    Map<String, Object> bop = (HashMap<String, Object>) snapshot.getValue();
 
                     //List<Object> values = (List<Object>) bop.values();
-                   // System.out.println("Skills: " + values);
+                    System.out.println("Skills: " + bop);
                     //System.out.println("Skills: " + bop.containsValue(SearchActivity.list));
-                    System.out.println("Skills: " + bop.get("Skills"));
+                    //System.out.println("Skills: " + bop.get("Skills"));
 
                     Log.d(TAG, "BBABABABABBAABBABBABABAB");
 

@@ -31,6 +31,7 @@
         android:layout_alignBottom="@+id/imageView">
     </TextView>
 
+    <!--
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -87,6 +88,7 @@
         android:checked="false"
         android:layout_below="@+id/checkBoxGardener"
         android:layout_alignStart="@+id/NameID" />
+        -->
 
     <ImageView
         android:layout_width="wrap_content"
@@ -103,8 +105,8 @@
         android:text="Phone"
         android:ems="10"
         android:id="@+id/Phone"
-        android:layout_below="@+id/checkBoxElectrician"
-        android:layout_alignStart="@+id/checkBoxElectrician" />
+        android:layout_below="@+id/radioGroup"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -113,9 +115,79 @@
         android:text="Bio"
         android:ems="10"
         android:id="@+id/Bio"
+        android:layout_marginTop="49dp"
         android:layout_below="@+id/Phone"
-        android:layout_alignStart="@+id/NameID"
-        android:layout_marginTop="30dp" />
+        android:layout_alignParentStart="true" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioGroup"
+        android:layout_below="@+id/imageView">
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Carpenter"
+        android:id="@+id/CarpenterButton"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="41dp"
+        android:checked="false" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Locksmith"
+        android:id="@+id/LocksmithButton"
+        android:layout_below="@+id/CarpenterButton"
+        android:layout_alignParentStart="true"
+        android:checked="false" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Glazer"
+        android:id="@+id/GlazerButton"
+        android:layout_below="@+id/LocksmithButton"
+        android:layout_alignParentStart="true"
+        android:checked="false" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Plumber"
+        android:id="@+id/PlumberButton"
+        android:layout_below="@+id/GlazerButton"
+        android:layout_alignParentStart="true"
+        android:checked="false" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gardener"
+        android:id="@+id/GardenerButton"
+        android:layout_below="@+id/PlumberButton"
+        android:layout_alignParentStart="true"
+        android:checked="false" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mechanic"
+        android:id="@+id/MechanicButton"
+        android:layout_below="@+id/GardenerButton"
+        android:layout_alignParentStart="true"
+        android:checked="false" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Electrician"
+        android:id="@+id/ElectricianButton"
+        android:layout_below="@+id/MechanicButton"
+        android:layout_alignParentStart="true"
+        android:checked="false" />
+    </RadioGroup>
 
 
 </RelativeLayout>

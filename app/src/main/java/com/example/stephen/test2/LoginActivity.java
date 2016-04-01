@@ -34,6 +34,7 @@ import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -70,6 +71,9 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     public Location mLastLocation;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     String lat, lon;
+    //String ID;
+    //final String finalID = null;
+
 
 
     //private FragmentTabHost mTabHost;
@@ -224,7 +228,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                     public void onSuccess(LoginResult loginResult) {
 
 
-
                         GraphRequest request = GraphRequest.newMeRequest(
                                 AccessToken.getCurrentAccessToken(),
                                 new GraphRequest.GraphJSONObjectCallback() {
@@ -250,9 +253,9 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                         //final String ID = response.toString();
 
 
-
                                         final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                                         final String finalID = ID;
+                                        //finalID = ID;
                                         final String finalFName = FName;
                                         //final String Skills = Skills[];
                                         userRef.child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -276,8 +279,10 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                         private String Lat;
                                                         private String Long;
                                                         private String fullName;
+
                                                         //private String Skills [];
-                                                        public User() {}
+                                                        public User() {
+                                                        }
 
                                                         public User(String Lat, String Long, String fullName) {
                                                             this.Lat = Lat;
@@ -310,9 +315,9 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                     Ref.setValue(Fobject);
 
 
-
                                                 }
                                             }
+
                                             @Override
                                             public void onCancelled(FirebaseError arg0) {
 
@@ -337,6 +342,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                     }
                 });
 
+        //Firebase bash = new Firebase("https://test1-polly.firebaseio.com/users/" + finalID);
 
     }
 
@@ -585,15 +591,37 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         lon = String.valueOf(location.getLongitude());
         //updateUI();
         Log.d(TAG, lat + ", " + lon);
-        //if stops writing to db without authorisation
-        if(AccessToken.ACCESS_TOKEN_KEY != null) {
-            //updating lat and lon in database on locationchanged
-            final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");
-            Firebase Ref = ref.child("users");
-            Ref.child("lat").setValue("" + lat);
-            Ref.child("long").setValue("" + lon);
-        }
+        final String[] ID = new String[1];
 
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(final JSONObject Fobject, GraphResponse response) {
+
+                        ID[0] = null;
+                        try {
+                            ID[0] = Fobject.getString("id");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d(TAG, ID[0]);
+
+                        //updating lat and lon in database on locationchanged
+                        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/");
+                        Firebase Ref = userRef.child("users").child("" + ID.toString());
+                        //Query rRef = Ref.equalTo("", finalID);
+                        Ref.child("lat").setValue("" + lat);
+                        Ref.child("long").setValue("" + lon);
+
+
+
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id");
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
 
@@ -678,6 +706,8 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         buildGoogleApiClient();
 
     }
+
+
 
 
 }
