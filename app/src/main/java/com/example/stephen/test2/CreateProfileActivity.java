@@ -40,7 +40,6 @@ import java.util.Map;
 
 public class CreateProfileActivity extends AppCompatActivity {
 
-    //private CheckBox checkBoxCarpenter, checkBoxLocksmith, checkBoxGlazer, checkBoxPlumber, checkBoxElectrician, checkBoxGardener, checkBoxMechanic;
     private TextView NameText;
     private ImageView Profiler;
     Bitmap fbitmap;
@@ -48,10 +47,10 @@ public class CreateProfileActivity extends AppCompatActivity {
     String ID;
     public static List<String> list = new ArrayList<String>();
     public static final String TAG = CreateProfileActivity.class.getSimpleName();
-    String id;
+    //String id;
     String Skill = null;
     private RadioGroup radio;
-    private RadioButton Carpenter, Locksmith, Glazer, Plumber, Gardener, Mechanic, Electrician;
+    //private RadioButton Carpenter, Locksmith, Glazer, Plumber, Gardener, Mechanic, Electrician;
 
 
     @Override
@@ -60,7 +59,6 @@ public class CreateProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_profile);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
-        //addListenerOnCheckboxes();
         addlistenertoradio();
 
 
@@ -185,123 +183,6 @@ public class CreateProfileActivity extends AppCompatActivity {
         }
     }
 
-/*
-
-    public void addListenerOnCheckboxes() {
-        checkBoxCarpenter = (CheckBox) findViewById(R.id.checkBoxCarpenter);
-        checkBoxCarpenter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxCarpenter.isChecked()))) {
-
-                    String Carpenter = "Carpenter";
-                    list.add("" + Carpenter);
-                }else {
-                    list.remove("Carpenter");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxLocksmith = (CheckBox) findViewById(R.id.checkBoxLocksmith);
-        checkBoxLocksmith.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxLocksmith.isChecked()))) {
-
-                    String Locksmith = "Locksmith";
-                    list.add("" + Locksmith);
-                }else {
-                    list.remove("Locksmith");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxGlazer = (CheckBox) findViewById(R.id.checkBoxGlazer);
-        checkBoxGlazer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxGlazer.isChecked()))) {
-
-                    String Glazer = "Glazer";
-                    list.add("" + Glazer);
-                }else {
-                    list.remove("Glazer");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxPlumber = (CheckBox) findViewById(R.id.checkBoxPlumber);
-        checkBoxPlumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxPlumber.isChecked()))) {
-
-                    String Plumber = "Plumber";
-                    list.add("" + Plumber);
-                } else {
-                    list.remove("Plumber");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxElectrician = (CheckBox) findViewById(R.id.checkBoxElectrician);
-        checkBoxElectrician.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxElectrician.isChecked()))) {
-
-                    String Electrician = "Electrician";
-                    list.add("" + Electrician);
-                }else {
-                    list.remove("Electrician");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxGardener = (CheckBox) findViewById(R.id.checkBoxGardener);
-        checkBoxGardener.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxGardener.isChecked()))) {
-
-                    String Gardener = "Gardener";
-                    list.add("" + Gardener);
-                }else {
-                    list.remove("Gardener");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxMechanic = (CheckBox) findViewById(R.id.checkBoxMechanic);
-        checkBoxMechanic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxMechanic.isChecked()))) {
-
-                    String Mechanic = "Mechanic";
-                    list.add("" + Mechanic);
-                } else {
-                    list.remove("Mechanic");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-
-    }*/
 
     public void addlistenertoradio(){
         radio = (RadioGroup)findViewById(R.id.radioGroup);
@@ -322,6 +203,8 @@ public class CreateProfileActivity extends AppCompatActivity {
                     Skill ="Electrician";
                 }else if(checkedId == R.id.GardenerButton){
                     Skill ="Gardener";
+                }else if (checkedId == R.id.UserButton){
+                    Skill ="User";
                 }
                 Log.d(TAG, "BAAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSSSHHH");
             }
@@ -331,27 +214,27 @@ public class CreateProfileActivity extends AppCompatActivity {
     public void writeskillstodatabase(){
         //String Skilljoined = Joiner.on(",").join(list);
 
-        class Skills extends CreateProfileActivity {
+        class Skills {
+            private String id;
+            //private String skill;
             public Skills() {
             }
-            public Skills(String id, String Skill) {
+            public Skills(String id) {
                 this.id = id;
-                this.Skill = Skill;
+                //this.skill = Skill;
             }
+
             public String getid() {
                 return id;
-            }
+            }/*
             public String getSkill() {
-                return Skill;
-            }
+                return skill;
+            }*/
         }
         Log.d(TAG, "EEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-
-
-        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/");//took out users
-        final Firebase ref = userRef.child("Skills");
-
-        Skills Skillage = new Skills("" + ID, "" + Skill);
+        final Firebase rRef = new Firebase("https://test1-polly.firebaseio.com/");//took out users
+        final Firebase ref = rRef.child("Skills").child("" + Skill);
+        Skills Skillage = new Skills("" + ID);
         ref.setValue(Skillage);
 
         //ref.setValue(Fobject);

@@ -10,6 +10,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -44,6 +45,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.common.base.Joiner;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,10 +71,15 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     //protected LocationManager mLocationManager;
     //String joined = TextUtils.join(", ", SearchActivity.list);
-    String joined = Joiner.on("\t").join(SearchActivity.list);
+    //String joined = Joiner.on("\t").join(SearchActivity.list);
+    //String id, Lat, Long;
 
     //public static List<String> list2 = new ArrayList<String>();
     //SearchActivity.list = list2;
+    //public String Skill = SearchActivity.Skill;
+    String id;
+    String Lat;
+    String Long;
 
 
     @Override
@@ -90,128 +98,70 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         //then check if there within the radius
         //if so display them
 
-        final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/Skills");
-        Query qref = ref.equalTo(String.valueOf(SearchActivity.list));
-        //ref.child("Skills").equalTo(String.valueOf(SearchActivity.list));
-
-
         //final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");
         //Firebase Ref = ref.child("users").child("/");
         //Ref.child("Skills").equals(SearchActivity.list);
         //startat();
-
-
         //Query Ref = ref.child("users").child("").equalTo("", finalID);
-
         //Query queryRef = userRef.orderByChild("Skills").equalTo("", joined);
         //Query queryRef = userRef.orderByChild("Skills").equalTo("" + SearchActivity.list);
-        qref.addValueEventListener(new ValueEventListener() {
+
+        //getskillID();
+        //getuserdetails();
+        //new com.example.stephen.test2.AsyncTask().execute();
+
+
+        final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/Skills");
+        Query sref = ref.child("" + SearchActivity.Skill);
+
+        sref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot child : snapshot.getChildren()) {
+                for (DataSnapshot child : snapshot.getChildren()) {//-------------MAYBE INCREMNET THIS TO DISPLAY 
 
                     //List<String> bop = (ArrayList<String>) snapshot.getValue();
                     Map<String, Object> bop = (HashMap<String, Object>) snapshot.getValue();
 
                     //List<Object> values = (List<Object>) bop.values();
-                    System.out.println("Skills: " + bop);
+                    //System.out.println("Skills id: " + bop.get("id"));
+                    id = (String) bop.get("id");
+                    final String finalID = id;
+                    System.out.println("get id: " + finalID);
+                    Log.d(TAG, "BBABABABABBAABBABBABABAB");
+
+                    final Firebase Iref = new Firebase("https://test1-polly.firebaseio.com/users");
+                    Query LLref = Iref.child("" + finalID);//---------this isnt the id from above---------------------------------
+
+                    LLref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            for (DataSnapshot child : snapshot.getChildren()) {
+
+                                Map<String, Object> hop = (HashMap<String, Object>) snapshot.getValue();
+                                Lat = (String) hop.get("lat");
+                                Long = (String) hop.get("long");
+                                System.out.println("lat:" + Lat);
+
+                                Log.d(TAG, "kebab");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                        }
+                    });
+
                     //System.out.println("Skills: " + bop.containsValue(SearchActivity.list));
                     //System.out.println("Skills: " + bop.get("Skills"));
 
-                    Log.d(TAG, "BBABABABABBAABBABBABABAB");
-
-
-                    /*
-                    String pollName = poll.child("Name").getValue(String.class);
-                    DataSnapshot elections = poll.child("Elections");
-                    for (DataSnapshot election : elections.getChildren()) {
-                        String electionName = election.child("Name").getValue(String.class);
-                    }*/
-
-
                 }
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
-
             }
         });
 
-        //Query queryRef = userRef.orderByChild("Skills").equalTo("", joined);
-        /*
-        Query queryRef = userRef.orderByChild("Skills").equalTo("" + SearchActivity.list);
-        queryRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-                //System.out.println(snapshot.getKey());
-                //Map<String, Object> Q = (Map<String, Object>) snapshot.getValue();
-                Log.d(TAG, "BBABABABABBAABBABBABABAB");
-                System.out.println((Ref));
-            }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-*/
-
-        /*
-
-        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
-
-        //final Firebase ref = userRef.child("" + ID);
-        //Map<String, Object> Biog = new HashMap<String, Object>();
-
-        Query queryRef = userRef.orderByChild("Skill");
-        queryRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-
-
-
-                //DinosaurFacts facts = snapshot.getValue(DinosaurFacts.class);
-                //System.out.println(snapshot.getKey() + " was " + facts.getHeight() + " meters tall");
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-        */
-
+        //final String finalID = id;
 
 
 
@@ -534,6 +484,11 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         }
     }*/
 
+    public void getskillID(){
 
+    }
 
+    public void getuserdetails(){
+
+    }
 }

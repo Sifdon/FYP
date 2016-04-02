@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -35,20 +36,18 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
     public static final String TAG = SearchActivity.class.getSimpleName();
     private SeekBar RadiusBar;
     private TextView RadiusText;
-    private CheckBox checkBoxCarpenter, checkBoxLocksmith, checkBoxGlazer, checkBoxPlumber, checkBoxElectrician, checkBoxGardener, checkBoxMechanic;
-    public static List<String> list = new ArrayList<String>();
+    private RadioGroup radio;
+    static String Skill = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        addListenerOnCheckboxes();
-
-        //addListenerOnCarpenter();
-
         //Toolpbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+        addlistenertoradio();
 
 
 
@@ -112,135 +111,31 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
 
     }
 
-    public void addListenerOnCheckboxes() {
-
-
-        checkBoxCarpenter = (CheckBox) findViewById(R.id.checkBoxCarpenter);
-        checkBoxCarpenter.setOnClickListener(new View.OnClickListener() {
+    public void addlistenertoradio(){
+        radio = (RadioGroup)findViewById(R.id.radioGroup);
+        radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxCarpenter.isChecked()))) {
-
-                    //updates user profile with selected skills
-                    String Carpenter = "Carpenter";
-                    list.add("" + Carpenter);
-
-                } else {
-                    list.remove("Carpenter");
-                    Log.d(TAG, "REMOVED");
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.CarpenterButton) {
+                    Skill = "Carpenter";
+                } else if (checkedId == R.id.LocksmithButton) {
+                    Skill = "Locksmith";
+                } else if (checkedId == R.id.GlazerButton) {
+                    Skill = "Glazer";
+                } else if (checkedId == R.id.PlumberButton) {
+                    Skill = "Plumber";
+                } else if (checkedId == R.id.MechanicButton) {
+                    Skill = "Mechanic";
+                } else if (checkedId == R.id.ElectricianButton) {
+                    Skill = "Electrician";
+                } else if (checkedId == R.id.GardenerButton) {
+                    Skill = "Gardener";
                 }
+                Log.d(TAG, "BAAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSSSHHH");
             }
         });
-
-        checkBoxLocksmith = (CheckBox) findViewById(R.id.checkBoxLocksmith);
-        checkBoxLocksmith.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxLocksmith.isChecked()))) {
-
-                    //updates user profile with selected skills
-                    String Locksmith = "Locksmith";
-                    list.add("" + Locksmith);
-                }else {
-                    list.remove("Locksmith");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxGlazer = (CheckBox) findViewById(R.id.checkBoxGlazer);
-        checkBoxGlazer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxGlazer.isChecked()))) {
-
-                    //updates user profile with selected skills
-                    String Glazer = "Glazer";
-                    list.add("" + Glazer);
-                }else {
-                    list.remove("Glazer");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxPlumber = (CheckBox) findViewById(R.id.checkBoxPlumber);
-        checkBoxPlumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxPlumber.isChecked()))) {
-
-                    //updates user profile with selected skills
-                    String Plumber = "Plumber";
-                    list.add("" + Plumber);
-
-                }else {
-                    list.remove("Plumber");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxElectrician = (CheckBox) findViewById(R.id.checkBoxElectrician);
-        checkBoxElectrician.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxElectrician.isChecked()))) {
-
-                    //updates user profile with selected skills
-                    String Electrician = "Electrician";
-                    list.add("" + Electrician);
-
-                } else {
-                    list.remove("Electrician");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxGardener = (CheckBox) findViewById(R.id.checkBoxGardener);
-        checkBoxGardener.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxGardener.isChecked()))) {
-
-                    //updates user profile with selected skills
-                    String Gardener = "Gardener";
-                    list.add("" + Gardener);
-
-                }else {
-                    list.remove("Gardener");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-        checkBoxMechanic = (CheckBox) findViewById(R.id.checkBoxMechanic);
-        checkBoxMechanic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //is checkbox checked?
-                if (((checkBoxMechanic.isChecked()))) {
-
-                    //updates user profile with selected skills
-                    String Mechanic = "Mechanic";
-                    list.add("" + Mechanic);
-
-                }else {
-                    list.remove("Mechanic");
-                    Log.d(TAG, "REMOVED");
-                }
-            }
-        });
-
-
     }
+
 
 
 

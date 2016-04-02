@@ -280,7 +280,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                         private String Long;
                                                         private String fullName;
 
-                                                        //private String Skills [];
                                                         public User() {
                                                         }
 
@@ -288,8 +287,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                             this.Lat = Lat;
                                                             this.Long = Long;
                                                             this.fullName = fullName;
-                                                            //this.Skills = Skills;
-
                                                         }
 
                                                         public String getLat() {
@@ -303,21 +300,14 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                         public String getFullName() {
                                                             return fullName;
                                                         }
-
-                                                        //public String[] getSkills() {
-                                                        //    return Skills;
-                                                        //}
                                                     }
 
                                                     //final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                                                     Firebase Ref = ref.child("users").child("" + finalID);
                                                     User Fobject = new User("" + lat, "" + lon, "" + finalFName);
                                                     Ref.setValue(Fobject);
-
-
                                                 }
                                             }
-
                                             @Override
                                             public void onCancelled(FirebaseError arg0) {
 
