@@ -38,6 +38,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
     private TextView RadiusText;
     private RadioGroup radio;
     static String Skill = null;
+    static int Rad = 0;
 
 
     @Override
@@ -61,6 +62,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
                 RadiusText = (TextView) findViewById(R.id.RadiusTextID);
                 RadiusText.setText("Radius:: KM's " + Radius);
                 Log.d(TAG, "" + Radius);
+                Rad = Radius;
 
             }
 
@@ -74,6 +76,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
 
             }
         });
+
         //Done button like create profile
         //once pressed sends to maps where queries start
         final Button done = (Button) findViewById(R.id.donebutton);

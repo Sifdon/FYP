@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     //protected boolean mRequestingLocationUpdates = false;
     private GoogleApiClient mGoogleApiClient;
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 0;
-    public Location mLastLocation;
+    public static Location mLastLocation;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     String lat, lon;
     //String ID;
@@ -76,10 +76,30 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
 
 
 
-    //private FragmentTabHost mTabHost;
+    //private TabHost mTabHost;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+        TabHost tabHost = (TabHost)findViewById(android.R.id.tabhost);
+
+        TabHost.TabSpec tab1 = tabHost.newTabSpec("First Tab");
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("Second Tab");
+        TabHost.TabSpec tab3 = tabHost.newTabSpec("Third Tab");
+
+        tab1.setIndicator("Tab1");
+        tab1.setContent(new Intent(this,MapResultsActivity.class));
+
+        tab2.setIndicator("Tab2");
+        tab2.setContent(new Intent(this,FavouritesActivity.class));
+
+        tab3.setIndicator("Tab3");
+        tab3.setContent(new Intent(this,SettingsActivity.class));
+
+        tabHost.addTab(tab1);
+        tabHost.addTab(tab2);
+        tabHost.addTab(tab3);*/
 
 
 
@@ -106,53 +126,53 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
 
 
         //----------------------------------------------implementing tabs------------------------------------------------------
+
         /*
         Resources res = getResources();
 
-        mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
-        mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
+        mTabHost = (TabHost)findViewById(android.R.id.tabhost);
 
-        mTabHost.addTab(mTabHost.newTabSpec("MapsPeople").setIndicator("", res.getDrawable(R.drawable.icon_people_config)),
-                FragmentStackSupport.MapResultsActivity.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("Chats").setIndicator("", res.getDrawable(R.drawable.icon_messages_config)),
-                LoaderCursorSupport.ChatActivity.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("Settings").setIndicator("", res.getDrawable(R.drawable.icon_settings_config)),
-                LoaderCustomSupport.SettingsActivity.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("MapsPeople").setIndicator("", res.getDrawable(R.drawable.icon_people_config)));
+                //FragmentStackSupport.MapResultsActivity.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("Chats").setIndicator("", res.getDrawable(R.drawable.icon_messages_config)));
+                //LoaderCursorSupport.ChatActivity.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("Settings").setIndicator("", res.getDrawable(R.drawable.icon_settings_config)));
+                //LoaderCustomSupport.SettingsActivity.class, null);
 
 
-        /*
+
 
         //implementeing tabhost for app
         // maps tab
         Intent intentmapspeople = new Intent().setClass(this, MapResultsActivity.class);
-        TabHost.TabSpec tabSpecPeople = tabHost
+        TabHost.TabSpec tabSpecPeople = mTabHost
                 .newTabSpec("MapsPeople")
                 .setIndicator("", res.getDrawable(R.drawable.icon_people_config))
                 .setContent(intentmapspeople);
 
         // chat tab
-        Intent intentchat = new Intent().setClass(this, ChatActivity.class);
-        TabHost.TabSpec tabSpecChat = tabHost
+        Intent intentfav = new Intent().setClass(this, FavouritesActivity.class);
+        TabHost.TabSpec tabSpecFav = mTabHost
                 .newTabSpec("Apple")
                 .setIndicator("", res.getDrawable(R.drawable.icon_messages_config))
-                .setContent(intentchat);
+                .setContent(intentfav);
 
         // settings tab
         Intent intentsettings = new Intent().setClass(this, SettingsActivity.class);
-        TabHost.TabSpec tabSpecSettings = tabHost
+        TabHost.TabSpec tabSpecSettings = mTabHost
                 .newTabSpec("Windows")
                 .setIndicator("", res.getDrawable(R.drawable.icon_settings_config))
                 .setContent(intentsettings);
 
 
         // add all tabs
-        tabHost.addTab(tabSpecPeople);
-        tabHost.addTab(tabSpecChat);
-        tabHost.addTab(tabSpecSettings);
+        mTabHost.addTab(tabSpecPeople);
+        mTabHost.addTab(tabSpecFav);
+        mTabHost.addTab(tabSpecSettings);
 
         //set mapspeople tab as default (zero based)
-        tabHost.setCurrentTab(0);
-        */
+        mTabHost.setCurrentTab(0);*/
+
         //-----------------------------------------------end implementing tabs--------------------------
 
 
@@ -180,9 +200,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                     MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
             {
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
+                //The callback method gets the result of the request.
             }
         }
 
@@ -268,7 +286,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                     //user exists move to search
                                                 } else {
                                                     //user does not exist create user in db.
-                                                    //then move to search settings
+                                                    //then move to create profile
                                                     Log.d(TAG, "USER DOES NOT EXIST, CREATING ONE NOW");
 
                                                     //User needs to fill in what they are e.g skills/user
@@ -364,12 +382,8 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         if(AccessToken.getCurrentAccessToken() != null) {
             //updating lat and lon in database on locationchanged
 
-        }
-        /*
-        if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
-            startLocationUpdates();
         }*/
-        //start client
+
     }
 
     @Override
@@ -500,7 +514,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     @Override
     public void onConnected(Bundle connectionHint) {
 
-        //displayLocation();
         createLocationRequest();
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
@@ -511,14 +524,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
             lon = String.valueOf(mLastLocation.getLongitude());
 
         }
-
-        //Log.d(TAG, lat +", " + lon);
-
-        /*
-        if (mRequestingLocationUpdates) {
-            //startLocationUpdates();
-        }*/
-
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling

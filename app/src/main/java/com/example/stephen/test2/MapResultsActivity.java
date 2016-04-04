@@ -18,9 +18,13 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -43,9 +47,13 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.common.base.Joiner;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,11 +66,11 @@ import java.util.Map;
 public class MapResultsActivity extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, LocationListener, OnConnectionFailedListener, ResultCallback<LocationSettingsResult> {
 
     private GoogleMap mMap;
-    //protected GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient;
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
-    //protected Location mLastLocation;
-    private BroadcastReceiver mResultReceiver;
-    //protected LocationRequest mLocationRequest;
+    public Location mLastLocation;
+    //private BroadcastReceiver mResultReceiver;
+    protected LocationRequest mLocationRequest;
     //protected LocationSettingsRequest mLocationSettingsRequest;
     //protected Location mCurrentLocation;
     //protected Boolean mRequestingLocationUpdates;
@@ -78,8 +86,10 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     //SearchActivity.list = list2;
     //public String Skill = SearchActivity.Skill;
     String id;
-    String Lat;
-    String Long;
+    String Lat, meLat;
+    String Long, meLong;
+    public int rad = SearchActivity.Rad;
+    public String myID;
 
 
     @Override
@@ -90,6 +100,28 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        
+
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(final JSONObject object, GraphResponse response) {
+                        myID = null;
+                        try {
+                            myID = object.getString("id");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d(TAG, "WORKING:" + myID);
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id");
+        request.setParameters(parameters);
+        request.executeAsync();
+
+
 
 
         //Log.d(TAG, "" + joined);
@@ -109,53 +141,123 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         //getskillID();
         //getuserdetails();
         //new com.example.stephen.test2.AsyncTask().execute();
+        //buildGoogleApiClient();
 
 
-        final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/Skills");
-        Query sref = ref.child("" + SearchActivity.Skill);
+        final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/Skill");
+        Query sref = ref.child("" + SearchActivity.Skill).orderByChild("id");
 
-        sref.addValueEventListener(new ValueEventListener() {
+        sref.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot child : snapshot.getChildren()) {//-------------MAYBE INCREMNET THIS TO DISPLAY 
+            public void onChildAdded(final DataSnapshot Snapshot, String s) {
+                for (DataSnapshot child : Snapshot.getChildren()) {//-------------MAYBE INCREMNET THIS TO DISPLAY
 
-                    //List<String> bop = (ArrayList<String>) snapshot.getValue();
-                    Map<String, Object> bop = (HashMap<String, Object>) snapshot.getValue();
+                    final Map<String, Object> bop = (HashMap<String, Object>) Snapshot.getValue();
 
-                    //List<Object> values = (List<Object>) bop.values();
-                    //System.out.println("Skills id: " + bop.get("id"));
                     id = (String) bop.get("id");
-                    final String finalID = id;
-                    System.out.println("get id: " + finalID);
-                    Log.d(TAG, "BBABABABABBAABBABBABABAB");
+                    //final String finalID = id;
+                    System.out.println("get id: " + id);
+                    Log.d(TAG, "" + Snapshot.toString());
+                    //Log.d(TAG, "," + id);
+                    //final String rid = (String)Snapshot.getValue();
 
                     final Firebase Iref = new Firebase("https://test1-polly.firebaseio.com/users");
-                    Query LLref = Iref.child("" + finalID);//---------this isnt the id from above---------------------------------
+                    Query LLref = Iref.child("" + id);
 
                     LLref.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             for (DataSnapshot child : snapshot.getChildren()) {
-
                                 Map<String, Object> hop = (HashMap<String, Object>) snapshot.getValue();
                                 Lat = (String) hop.get("lat");
                                 Long = (String) hop.get("long");
-                                System.out.println("lat:" + Lat);
+                                System.out.println("lat:" + Lat + "long:" + Long);
+                                //Log.d(TAG, "kebab");
 
-                                Log.d(TAG, "kebab");
+                                /*
+
+                                Log.d(TAG, "" + myID);
+
+                                final Firebase dref = new Firebase("https://test1-polly.firebaseio.com/users");
+                                Query XXref = dref.child("" + myID);
+                                XXref.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                            Map<String, Object> shop = (HashMap<String, Object>) dataSnapshot.getValue();
+                                            meLat = (String) shop.get("lat");
+                                            meLong = (String) shop.get("long");
+                                            Log.d(TAG, "kebab");
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });*/
+
+
+                                /*
+
+                                double Latme = Double.parseDouble(meLat);
+                                double Longme = Double.parseDouble(meLong);
+
+                                Log.d(TAG, "baaaassshhhh");
+
+                                double lat = Double.parseDouble(Lat);
+                                double lon = Double.parseDouble(Long);
+
+
+                                double R = 6371; // earth’s radius (mean radius = 6,371km)
+                                double dLat = Math.toRadians(Latme - lat);
+
+                                double dLon = Math.toRadians(Longme - lon);
+                                double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                        Math.cos(Math.toRadians(Latme)) * Math.cos(Math.toRadians(lat)) *
+                                                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                                double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                                double distance = R * c;
+
+                                Log.d(TAG, "" + distance);
+
+                                if (distance >= rad) {
+                                    id = (String) bop.get("id");
+
+                                    mMap.addMarker(new MarkerOptions()
+                                            .position(new LatLng(lat, lon))
+                                            .title(id));
+                                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.draw)));
+                                }*/
                             }
                         }
+
 
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
                         }
                     });
 
-                    //System.out.println("Skills: " + bop.containsValue(SearchActivity.list));
-                    //System.out.println("Skills: " + bop.get("Skills"));
 
                 }
             }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }
@@ -164,14 +266,10 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         //final String finalID = id;
 
 
-
-
-
-
         //mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-               // LOCATION_REFRESH_DISTANCE, mLocationListener);
+        // LOCATION_REFRESH_DISTANCE, mLocationListener);
 
         /*
 
@@ -194,9 +292,6 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         IntentFilter filter = new IntentFilter("com.example.stephen.test2.SendBroadcast");
         registerReceiver(mResultReceiver, filter);*/
         //mResultReceiver.setReceiver(this);
-
-
-
 
 
         // Here, thisActivity is the current activity
@@ -241,14 +336,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         }
     }
 
-
-
-
-
-
-
 /*
-
     protected synchronized void buildGoogleApiClient() {
         Log.i(TAG, "Building GoogleApiClient");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -257,19 +345,20 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                 .addApi(LocationServices.API)
                 .build();
     }
-
 */
+
     protected void onStart() {
         //mGoogleApiClient.connect();
         super.onStart();
     }
-/*
+    /*
+
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-    }
+    }/*
 
     protected void buildLocationSettingsRequest() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
@@ -300,7 +389,29 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     public void onConnected(Bundle connectionHint) {
 
+        /*
+        createLocationRequest();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null) {
+            lat = String.valueOf(mLastLocation.getLatitude());
+            lon = String.valueOf(mLastLocation.getLongitude());
+
+        }
+
+       // mGoogleApiClient.connect();
         /*
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
@@ -387,6 +498,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
 
 
     }
+
 
     /*
     protected void stopLocationUpdates() {
