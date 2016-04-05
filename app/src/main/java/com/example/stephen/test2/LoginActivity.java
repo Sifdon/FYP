@@ -81,25 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-        TabHost tabHost = (TabHost)findViewById(android.R.id.tabhost);
 
-        TabHost.TabSpec tab1 = tabHost.newTabSpec("First Tab");
-        TabHost.TabSpec tab2 = tabHost.newTabSpec("Second Tab");
-        TabHost.TabSpec tab3 = tabHost.newTabSpec("Third Tab");
-
-        tab1.setIndicator("Tab1");
-        tab1.setContent(new Intent(this,MapResultsActivity.class));
-
-        tab2.setIndicator("Tab2");
-        tab2.setContent(new Intent(this,FavouritesActivity.class));
-
-        tab3.setIndicator("Tab3");
-        tab3.setContent(new Intent(this,SettingsActivity.class));
-
-        tabHost.addTab(tab1);
-        tabHost.addTab(tab2);
-        tabHost.addTab(tab3);*/
 
 
 
@@ -107,6 +89,11 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_login);
         Firebase.setAndroidContext(this);
+
+        if (AccessToken.getCurrentAccessToken() != null){
+            startActivity(new Intent(LoginActivity.this, MapResultsActivity.class));
+        }
+
 
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -122,59 +109,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         } catch (NoSuchAlgorithmException e) {
 
         }
-
-
-
-        //----------------------------------------------implementing tabs------------------------------------------------------
-
-        /*
-        Resources res = getResources();
-
-        mTabHost = (TabHost)findViewById(android.R.id.tabhost);
-
-        mTabHost.addTab(mTabHost.newTabSpec("MapsPeople").setIndicator("", res.getDrawable(R.drawable.icon_people_config)));
-                //FragmentStackSupport.MapResultsActivity.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("Chats").setIndicator("", res.getDrawable(R.drawable.icon_messages_config)));
-                //LoaderCursorSupport.ChatActivity.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("Settings").setIndicator("", res.getDrawable(R.drawable.icon_settings_config)));
-                //LoaderCustomSupport.SettingsActivity.class, null);
-
-
-
-
-        //implementeing tabhost for app
-        // maps tab
-        Intent intentmapspeople = new Intent().setClass(this, MapResultsActivity.class);
-        TabHost.TabSpec tabSpecPeople = mTabHost
-                .newTabSpec("MapsPeople")
-                .setIndicator("", res.getDrawable(R.drawable.icon_people_config))
-                .setContent(intentmapspeople);
-
-        // chat tab
-        Intent intentfav = new Intent().setClass(this, FavouritesActivity.class);
-        TabHost.TabSpec tabSpecFav = mTabHost
-                .newTabSpec("Apple")
-                .setIndicator("", res.getDrawable(R.drawable.icon_messages_config))
-                .setContent(intentfav);
-
-        // settings tab
-        Intent intentsettings = new Intent().setClass(this, SettingsActivity.class);
-        TabHost.TabSpec tabSpecSettings = mTabHost
-                .newTabSpec("Windows")
-                .setIndicator("", res.getDrawable(R.drawable.icon_settings_config))
-                .setContent(intentsettings);
-
-
-        // add all tabs
-        mTabHost.addTab(tabSpecPeople);
-        mTabHost.addTab(tabSpecFav);
-        mTabHost.addTab(tabSpecSettings);
-
-        //set mapspeople tab as default (zero based)
-        mTabHost.setCurrentTab(0);*/
-
-        //-----------------------------------------------end implementing tabs--------------------------
-
 
 
         //adding location updates to this activity-----------------------------
@@ -211,6 +145,9 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         callbackManager = CallbackManager.Factory.create();
         //MultiDex.install(this);
         final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");
+
+
+
 
         final Button btn = (Button) findViewById(R.id.mapbutton);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -373,22 +310,27 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         super.onPause();
         //stopLocationUpdates();
         //maybe stop client
+        mGoogleApiClient.disconnect();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        /*
+        mGoogleApiClient.connect();
+
         if(AccessToken.getCurrentAccessToken() != null) {
             //updating lat and lon in database on locationchanged
+            startActivity(new Intent(LoginActivity.this, MapResultsActivity.class));
 
-        }*/
-
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mGoogleApiClient.disconnect();
+
         //stopLocationUpdates();
         //stop client
     }

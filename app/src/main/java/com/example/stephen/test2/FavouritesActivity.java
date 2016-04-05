@@ -7,7 +7,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 public class FavouritesActivity extends AppCompatActivity {
 
@@ -17,26 +19,32 @@ public class FavouritesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favourites);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
 
 
-        TabHost tabHost = (TabHost)findViewById(android.R.id.tabhost);
+        final Button btn = (Button) findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FavouritesActivity.this, SettingsActivity.class));
+            }
+        });
 
-        TabHost.TabSpec tab1 = tabHost.newTabSpec("First Tab");
-        TabHost.TabSpec tab2 = tabHost.newTabSpec("Second Tab");
-        TabHost.TabSpec tab3 = tabHost.newTabSpec("Third Tab");
+        final Button btn2 = (Button) findViewById(R.id.button2);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FavouritesActivity.this, FavouritesActivity.class));
+            }
+        });
+        final Button btn3 = (Button) findViewById(R.id.button3);
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FavouritesActivity.this, MapResultsActivity.class));
+            }
+        });
 
-        tab1.setIndicator("Tab1");
-        tab1.setContent(new Intent(this,MapResultsActivity.class));
-
-        tab2.setIndicator("Tab2");
-        tab2.setContent(new Intent(this,FavouritesActivity.class));
-
-        tab3.setIndicator("Tab3");
-        tab3.setContent(new Intent(this,SettingsActivity.class));
-
-        tabHost.addTab(tab1);
-        tabHost.addTab(tab2);
-        tabHost.addTab(tab3);
     }
 
 }

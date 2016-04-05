@@ -46,8 +46,10 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        //Toolpbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+
         addlistenertoradio();
 
 
@@ -137,6 +139,21 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
                 Log.d(TAG, "BAAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSSSHHH");
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putInt("rad", Rad);
+        savedInstanceState.putString("MyString", "" + Skill);
+    }
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        Rad = savedInstanceState.getInt("MyInt");
+        Skill = savedInstanceState.getString("MyString");
     }
 
 

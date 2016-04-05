@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
@@ -7,13 +8,33 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.stephen.test2.SearchActivity">
 
-    <Button
-        android:layout_width="wrap_content"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Done"
-        android:id="@+id/donebutton"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search Settings"
+                android:layout_gravity="center"
+                android:id="@+id/toolbar_title"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Done"
+                android:id="@+id/donebutton"
+                android:layout_gravity="end" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+
 
     <TextView
         android:id="@+id/RadiusTextID"
@@ -21,7 +42,7 @@
         android:layout_height="wrap_content"
         android:text="Radius"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_below="@+id/donebutton"
+        android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true">
     </TextView>
 
@@ -51,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:max="10"
-        android:layout_below="@+id/donebutton"
+        android:layout_below="@+id/toolbar"
         android:layout_alignParentStart="true">
     </SeekBar>
 
@@ -129,4 +150,4 @@
     </RadioGroup>
 
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

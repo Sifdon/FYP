@@ -5,32 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.stephen.test2.SettingsActivity">
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:id="@+id/button"
-        android:drawableStart="@drawable/ic_settings_white_48dp"
-        android:padding="10dp"
-        android:layout_marginTop="0dp" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:id="@+id/button2"
-        android:drawableStart="@drawable/ic_people_white_48dp"
-        android:padding="10dp"
-        android:layout_marginTop="0dp" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left|bottom"
-        android:id="@+id/button3"
-        android:drawableStart="@drawable/ic_people_white_48dp"
-        android:padding="10dp"
-        android:layout_marginTop="0dp" />
+    tools:context="com.example.stephen.test2.ResultProfileActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -46,14 +21,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Settings"
+                android:text="Selected"
                 android:layout_gravity="center"
                 android:id="@+id/toolbar_title"/>
         </android.support.v7.widget.Toolbar>
-
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_settings" />
+    <include layout="@layout/content_result_profile" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_dialog_email" />
 
 </android.support.design.widget.CoordinatorLayout>

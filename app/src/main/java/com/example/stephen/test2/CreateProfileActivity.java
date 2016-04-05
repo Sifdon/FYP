@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,8 +49,12 @@ public class CreateProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         addlistenertoradio();
 
         GraphRequest request = GraphRequest.newMeRequest(
@@ -82,8 +88,9 @@ public class CreateProfileActivity extends AppCompatActivity {
         request.executeAsync();
 
         getUserPic();
-        Profiler = (ImageView) findViewById(R.id.imageView);
-        Profiler.setImageBitmap(fbitmap);
+
+
+
 
         //addListenerOnCarpenter();//see if listener for multiple checkboxes
         //error checking if done pressed and checkbox not clicked
@@ -114,20 +121,23 @@ public class CreateProfileActivity extends AppCompatActivity {
 
     }
 
-    public Bitmap getUserPic() {///////-----------------this isnt working---------------------
+    public void getUserPic() {///////-----------------this isnt working---------------------
         String imageURL;
         fbitmap = null;
         Log.d(TAG, "Loading Picture");
-        imageURL = "http://graph.facebook.com/"+ID+"/picture?type=small";
+        imageURL = "https://graph.facebook.com/"+ID+"/picture?type=small";
         try {
             fbitmap = BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent());
         } catch (Exception e) {
             Log.d(TAG, "Loading Picture FAILED");
             e.printStackTrace();
         }
-        return fbitmap;
+        //return fbitmap;
         //bitmap = Profiler;
-
+        if(fbitmap != null){
+            Profiler = (ImageView)findViewById(R.id.imageView);
+            Profiler.setImageBitmap(fbitmap);
+        }
     }
 
 

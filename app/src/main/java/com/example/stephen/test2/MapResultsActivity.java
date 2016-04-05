@@ -16,9 +16,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -39,6 +43,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -49,6 +54,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.common.base.Joiner;
 
@@ -100,7 +106,41 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+
+        final Button search = (Button) findViewById(R.id.sbutton);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapResultsActivity.this, SearchActivity.class));
+            }
+        });
+
+        final Button btn = (Button) findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapResultsActivity.this, SettingsActivity.class));
+            }
+        });
+
+        final Button btn2 = (Button) findViewById(R.id.button2);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapResultsActivity.this, FavouritesActivity.class));
+            }
+        });
+        final Button btn3 = (Button) findViewById(R.id.button3);
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapResultsActivity.this, MapResultsActivity.class));
+            }
+        });
+
 
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
@@ -114,12 +154,181 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                             e.printStackTrace();
                         }
                         Log.d(TAG, "WORKING:" + myID);
+
+                        final Firebase dref = new Firebase("https://test1-polly.firebaseio.com/users");
+                        Query XXref = dref.child("" + myID);
+                        XXref.addValueEventListener(new ValueEventListener() {
+
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                    Map<String, Object> shop = (HashMap<String, Object>) dataSnapshot.getValue();
+                                    meLat = (String) shop.get("lat");
+                                    meLong = (String) shop.get("long");
+                                    Log.d(TAG, "kebab");
+
+                                    final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/Skill");
+                                    Query sref = ref.child("" + SearchActivity.Skill).orderByChild("id");
+
+                                    sref.addChildEventListener(new ChildEventListener() {
+                                        @Override
+                                        public void onChildAdded(final DataSnapshot Snapshot, String s) {
+                                            for (DataSnapshot child : Snapshot.getChildren()) {//-------------MAYBE INCREMNET THIS TO DISPLAY
+
+                                                final Map<String, Object> bop = (HashMap<String, Object>) Snapshot.getValue();
+
+                                                id = (String) bop.get("id");
+                                                //final String finalID = id;
+
+                                                if (id != null) {
+
+
+                                                        System.out.println("get id: " + id);
+                                                        Log.d(TAG, "" + Snapshot.toString());
+
+                                                        final Firebase Iref = new Firebase("https://test1-polly.firebaseio.com/users");
+                                                        Query LLref = Iref.child("" + id);
+
+                                                        LLref.addValueEventListener(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot snapshot) {
+                                                                for (DataSnapshot child : snapshot.getChildren()) {
+                                                                    Map<String, Object> hop = (HashMap<String, Object>) snapshot.getValue();
+                                                                    Lat = (String) hop.get("lat");
+                                                                    Long = (String) hop.get("long");
+                                                                    final String name = (String) hop.get("fullName");
+                                                                    System.out.println("lat:" + Lat + "long:" + Long);
+                                                                    //Log.d(TAG, "kebab");
+
+
+                                                                    double Latme = Double.parseDouble(meLat);
+                                                                    double Longme = Double.parseDouble(meLong);
+
+                                                                    Log.d(TAG, "baaaassshhhh");
+
+                                                                    double lat = Double.parseDouble(Lat);
+                                                                    double lon = Double.parseDouble(Long);
+
+
+                                                                    double R = 6371; // earth’s radius (mean radius = 6,371km)
+                                                                    double dLat = Math.toRadians(Latme - lat);
+
+                                                                    double dLon = Math.toRadians(Longme - lon);
+                                                                    double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                                                            Math.cos(Math.toRadians(Latme)) * Math.cos(Math.toRadians(lat)) *
+                                                                                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                                                                    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                                                                    double distance = R * c;
+
+                                                                    Log.d(TAG, "" + distance);
+                                                            /*
+                                                            mMap.addMarker(new MarkerOptions()
+                                                                    .position(new LatLng(lat, lon))
+                                                                    .title(name));
+                                                            mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));*/
+
+                                                                    if (distance <= rad) {
+
+                                                                        mMap.addMarker(new MarkerOptions()
+                                                                                .position(new LatLng(lat, lon))
+                                                                                .title(name));
+                                                                        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+                                                                            @Override
+                                                                            public boolean onMarkerClick(Marker arg0) {
+                                                                                if (arg0.getTitle().equals(name)) {
+                                                                                    String getID = id;
+                                                                                    startActivity(new Intent(MapResultsActivity.this, ResultProfileActivity.class));
+
+                                                                                }
+                                                                                return true;
+                                                                            }
+
+                                                                        });
+
+                                                                /*
+                                                                MarkerOptions marker = new MarkerOptions()
+                                                                        .position(new LatLng(lat, lon))
+                                                                        .title(name);
+                                                                mMap.addMarker(marker);
+                                                                mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));*/
+                                                                        //.icon(BitmapDescriptorFactory.fromResource(R.drawable.draw)));
+                                                                    }
+                                                                }
+                                                            }
+
+
+                                                            @Override
+                                                            public void onCancelled(FirebaseError firebaseError) {
+                                                            }
+                                                        });
+
+
+
+
+                                                }else {
+                                                    Context context = getApplicationContext();
+                                                    CharSequence text = "There are no Handymen in this area either";
+                                                    int duration = Toast.LENGTH_SHORT;
+
+                                                    Toast toast = Toast.makeText(context, text, duration);
+                                                    toast.show();
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    });
+
+
+
+
+
+
+
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+
+
+
+
+
+
                     }
                 });
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id");
         request.setParameters(parameters);
         request.executeAsync();
+
+        Log.d(TAG, "" + myID);
+
+
 
 
 
@@ -144,124 +353,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         //buildGoogleApiClient();
 
 
-        final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/Skill");
-        Query sref = ref.child("" + SearchActivity.Skill).orderByChild("id");
 
-        sref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(final DataSnapshot Snapshot, String s) {
-                for (DataSnapshot child : Snapshot.getChildren()) {//-------------MAYBE INCREMNET THIS TO DISPLAY
-
-                    final Map<String, Object> bop = (HashMap<String, Object>) Snapshot.getValue();
-
-                    id = (String) bop.get("id");
-                    //final String finalID = id;
-                    System.out.println("get id: " + id);
-                    Log.d(TAG, "" + Snapshot.toString());
-                    //Log.d(TAG, "," + id);
-                    //final String rid = (String)Snapshot.getValue();
-
-                    final Firebase Iref = new Firebase("https://test1-polly.firebaseio.com/users");
-                    Query LLref = Iref.child("" + id);
-
-                    LLref.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            for (DataSnapshot child : snapshot.getChildren()) {
-                                Map<String, Object> hop = (HashMap<String, Object>) snapshot.getValue();
-                                Lat = (String) hop.get("lat");
-                                Long = (String) hop.get("long");
-                                System.out.println("lat:" + Lat + "long:" + Long);
-                                //Log.d(TAG, "kebab");
-
-                                /*
-
-                                Log.d(TAG, "" + myID);
-
-                                final Firebase dref = new Firebase("https://test1-polly.firebaseio.com/users");
-                                Query XXref = dref.child("" + myID);
-                                XXref.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                            Map<String, Object> shop = (HashMap<String, Object>) dataSnapshot.getValue();
-                                            meLat = (String) shop.get("lat");
-                                            meLong = (String) shop.get("long");
-                                            Log.d(TAG, "kebab");
-
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(FirebaseError firebaseError) {
-
-                                    }
-                                });*/
-
-
-                                /*
-
-                                double Latme = Double.parseDouble(meLat);
-                                double Longme = Double.parseDouble(meLong);
-
-                                Log.d(TAG, "baaaassshhhh");
-
-                                double lat = Double.parseDouble(Lat);
-                                double lon = Double.parseDouble(Long);
-
-
-                                double R = 6371; // earth’s radius (mean radius = 6,371km)
-                                double dLat = Math.toRadians(Latme - lat);
-
-                                double dLon = Math.toRadians(Longme - lon);
-                                double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                                        Math.cos(Math.toRadians(Latme)) * Math.cos(Math.toRadians(lat)) *
-                                                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-                                double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                                double distance = R * c;
-
-                                Log.d(TAG, "" + distance);
-
-                                if (distance >= rad) {
-                                    id = (String) bop.get("id");
-
-                                    mMap.addMarker(new MarkerOptions()
-                                            .position(new LatLng(lat, lon))
-                                            .title(id));
-                                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.draw)));
-                                }*/
-                            }
-                        }
-
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-                        }
-                    });
-
-
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
 
         //final String finalID = id;
 
@@ -603,4 +695,6 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     public void getuserdetails(){
 
     }
+
+
 }
