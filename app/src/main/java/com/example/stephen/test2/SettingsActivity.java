@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -20,6 +22,11 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+
+        if (AccessToken.getCurrentAccessToken() == null){
+            startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
+
+        }
 
 
         final Button btn = (Button) findViewById(R.id.button);
