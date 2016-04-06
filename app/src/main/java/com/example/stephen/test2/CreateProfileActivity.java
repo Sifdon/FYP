@@ -30,6 +30,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+///******************************************************************************
+//All activities utilise standard api code from:
+//
+///Google Play Services: http://developer.android.com/google/index.html
+///Facebook Graph API: https://developers.facebook.com/docs/graph-api
+///Firebase API: https://www.firebase.com/docs/android/api/
+
+///******************************************************************************
 public class CreateProfileActivity extends AppCompatActivity {
 
     private TextView NameText;
@@ -52,11 +60,13 @@ public class CreateProfileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        //granting permissions for image retrieval
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         addlistenertoradio();
 
+        //facebook graph request
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -92,16 +102,12 @@ public class CreateProfileActivity extends AppCompatActivity {
 
 
 
-        //addListenerOnCarpenter();//see if listener for multiple checkboxes
+        //see if listener for multiple checkboxes
         //error checking if done pressed and checkbox not clicked
         //pull all from facebook again
 
         //Display facebook info here in text view
 
-        //checkboxes
-        //When checked = string
-        //checked = carpenter
-        //pass to db as string
 
         //when done button is finished write to database all at once
         final Button done = (Button) findViewById(R.id.donebutton);
@@ -144,7 +150,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
 
     //}
-    public void getPhone(){
+    public void getPhone(){//writing phone number and bios to users profile in database
 
         EditText PhoneNo = (EditText) findViewById(R.id.Phone);
         String PhoneNumber = PhoneNo.getText().toString();
@@ -172,7 +178,8 @@ public class CreateProfileActivity extends AppCompatActivity {
         }
     }
 
-
+//listener for radio check buttons
+    //sets skill
     public void addlistenertoradio(){
         radio = (RadioGroup)findViewById(R.id.radioGroup);
         radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -201,6 +208,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     }
 
 
+    //writes skill to databse storing with id using push method
     public void writeskillstodatabase(){
         //String Skilljoined = Joiner.on(",").join(list);
 

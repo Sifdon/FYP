@@ -23,7 +23,14 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
+///******************************************************************************
+//All activities utilise standard api code from:
+//
+///Google Play Services: http://developer.android.com/google/index.html
+///Facebook Graph API: https://developers.facebook.com/docs/graph-api
+///Firebase API: https://www.firebase.com/docs/android/api/
 
+///******************************************************************************
 public class ResultProfileActivity extends AppCompatActivity {
 
     public static final String TAG = ResultProfileActivity.class.getSimpleName();
@@ -43,7 +50,7 @@ public class ResultProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("" + PhoneNo));
+                callIntent.setData(Uri.parse("tel:" + PhoneNo));//sets phone number as data to call from screen
                 if (ActivityCompat.checkSelfPermission(ResultProfileActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -58,6 +65,7 @@ public class ResultProfileActivity extends AppCompatActivity {
             }
         });
 
+        //firebase retireval of user details wherre id
 
         final Firebase dref = new Firebase("https://test1-polly.firebaseio.com/users");
         Query XXref = dref.child("" + MapResultsActivity.getID);

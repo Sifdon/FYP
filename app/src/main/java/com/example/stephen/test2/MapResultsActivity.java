@@ -66,8 +66,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import static com.example.stephen.test2.MapResultsActivity.AddressResultReceiver.*;
+///******************************************************************************
+//All activities utilise standard api code from:
+//
+///Google Play Services: http://developer.android.com/google/index.html
+///Facebook Graph API: https://developers.facebook.com/docs/graph-api
+///Firebase API: https://www.firebase.com/docs/android/api/
 
+///******************************************************************************
 
 public class MapResultsActivity extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, LocationListener, OnConnectionFailedListener, ResultCallback<LocationSettingsResult> {
 
@@ -127,6 +133,8 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
 
+        //facebook graph request to get the user id with
+        //nested firebase request for location
 
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
@@ -150,7 +158,12 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                                     Map<String, Object> shop = (HashMap<String, Object>) dataSnapshot.getValue();
                                     meLat = (String) shop.get("lat");
                                     meLong = (String) shop.get("long");
-                                    Log.d(TAG, "kebab");
+                                    Log.d(TAG, "errrrrrrrrrrrr");
+
+                                    //once my location and id are retrieved
+                                    //the database queries for matching criteria to search settings
+                                    //first skill is match then pulls thatn users id
+                                    //matchs that id with their profile and gets their location
 
                                     final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/Skill");
                                     Query sref = ref.child("" + SearchActivity.Skill).orderByChild("id");
@@ -195,6 +208,11 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                                                                     double lon = Double.parseDouble(Long);
 
 
+                                                                    //****************************************************************************************7
+                                                                    //Haversine Formula, available at:
+                                                                    //http://www.movable-type.co.uk/scripts/latlong.html
+                                                                    //http://stackoverflow.com/questions/3257733/distance-between-two-locations-isnt-right
+                                                                    //haversine formula is used to dtermine distance between two locations
                                                                     double R = 6371; // earth’s radius (mean radius = 6,371km)
                                                                     double dLat = Math.toRadians(Latme - lat);
 
@@ -204,9 +222,13 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                                                                                     Math.sin(dLon / 2) * Math.sin(dLon / 2);
                                                                     double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                                                                     double distance = R * c;
+                                                                    //**********************************************************************************************
 
                                                                     Log.d(TAG, "" + distance);
 
+                                                                    //if the distance is less that or equal to the user defined radius
+                                                                    //add marker with taht users loction
+                                                                    //add listner for when clicked brings to profile
                                                                     if (distance <= rad) {
 
                                                                         mMap.addMarker(new MarkerOptions()
@@ -240,6 +262,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
 
 
                                                 }else {
+
                                                     Context context = getApplicationContext();
                                                     CharSequence text = "There are no Handymen in this area either";
                                                     int duration = Toast.LENGTH_SHORT;

@@ -57,7 +57,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+///******************************************************************************
+//All activities utilise standard api code from:
+//
+///Google Play Services: http://developer.android.com/google/index.html
+///Facebook Graph API: https://developers.facebook.com/docs/graph-api
+///Firebase API: https://www.firebase.com/docs/android/api/
 
+///******************************************************************************
 public class LoginActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<LocationSettingsResult> {
 
     CallbackManager callbackManager;
@@ -84,13 +91,17 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
 
 
 
+        //permissions for location services
 
         loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_login);
         Firebase.setAndroidContext(this);
 
-        if (AccessToken.getCurrentAccessToken() != null){
+        if (AccessToken.getCurrentAccessToken() != null) {
+            startActivity(new Intent(LoginActivity.this, CreateProfileActivity.class));//if a user is already logged in, proceed to maps
+
+            /*
             GraphRequest request = GraphRequest.newMeRequest(
                     AccessToken.getCurrentAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
@@ -171,9 +182,13 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
             parameters.putString("fields", "id, name, picture");
             request.setParameters(parameters);
             request.executeAsync();
+        }*/
         }
 
 
+        //*******************************************************************************************
+        //Generates hash key for android, Availabe at:
+        //http://stackoverflow.com/questions/4388992/key-hash-for-android-facebook-app
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.example.stephen.test2",
@@ -188,6 +203,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         } catch (NoSuchAlgorithmException e) {
 
         }
+        //**********************************************************************************************
 
 
         //adding location updates to this activity-----------------------------
@@ -213,8 +229,11 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
 
         //end of location updates----------------------------------------------------------
 
+        //creates call back mamngager for facebook
         callbackManager = CallbackManager.Factory.create();
         //MultiDex.install(this);
+
+        //database reference
         final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");
 
 
@@ -247,14 +266,17 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         });
 */
 
+        //calling if facebook token changes
         onFacebookAccessTokenChange(AccessToken.getCurrentAccessToken());
 
+        //
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
 
 
+                        //graph request to retrieve user details from facebook
                         GraphRequest request = GraphRequest.newMeRequest(
                                 AccessToken.getCurrentAccessToken(),
                                 new GraphRequest.GraphJSONObjectCallback() {
@@ -280,6 +302,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                         //final String ID = response.toString();
 
 
+                                        //once facebook pulls details, they are stored in firebase database
                                         final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
                                         final String finalID = ID;
                                         //finalID = ID;
@@ -301,6 +324,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                                                     //User needs to fill in what they are e.g skills/user
                                                     startActivity(new Intent(LoginActivity.this, CreateProfileActivity.class));
 
+                                                    //ussr class is created and set with values in database
                                                     class User {
                                                         //profile Picture
                                                         private String Lat;
@@ -408,6 +432,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     }
 
 
+    //permissions result
     private void loadPermissions(String perm,int requestCode) {
         if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
@@ -442,6 +467,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     }
 
 
+    //location services client
     protected synchronized void buildGoogleApiClient() {
         Log.i(TAG, "Building GoogleApiClient");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -453,6 +479,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
 
 
 
+    //location requestin for time intervals
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
@@ -468,6 +495,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         createLocationRequest();
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
+        //returns latitude and longitude and stores as a string
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (mLastLocation != null) {
@@ -517,9 +545,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
 
     @Override
     public void onLocationChanged(Location location) {
-        //your code here
-        //mLastLocation = location;
-        //displayLocation();
+        //if location changes update the database with new location
         lat = String.valueOf(location.getLatitude());
         lon = String.valueOf(location.getLongitude());
         //updateUI();
@@ -552,7 +578,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                         }
                     });
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id");
+            parameters.putString("fields", "id");//fields returned from facebook request
             request.setParameters(parameters);
             request.executeAsync();
         }
@@ -562,6 +588,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     @Override
     public void onResult(LocationSettingsResult result) {
 
+        //logging if permmissions are satified
         final Status status = result.getStatus();
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
@@ -594,8 +621,8 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
     //----------------------------------------------------------------facebook
     private void onFacebookAccessTokenChange(final AccessToken token) {
         if (token != null) {
-            final Firebase ref = new Firebase("https://test2-polly.firebaseio.com/");
 
+            final Firebase ref = new Firebase("https://test2-polly.firebaseio.com/");
             ref.authWithOAuthToken("facebook", token.getToken(), new Firebase.AuthResultHandler() {
                 @Override
                 public void onAuthenticated(AuthData authData) {

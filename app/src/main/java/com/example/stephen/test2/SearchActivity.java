@@ -31,6 +31,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+///******************************************************************************
+//All activities utilise standard api code from:
+//
+///Google Play Services: http://developer.android.com/google/index.html
+///Facebook Graph API: https://developers.facebook.com/docs/graph-api
+///Firebase API: https://www.firebase.com/docs/android/api/
+
+///******************************************************************************
+
+
+
+
 public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     public static final String TAG = SearchActivity.class.getSimpleName();
@@ -52,9 +64,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
 
         addlistenertoradio();
 
-
-
-
+            //defininf a seek bar for radius
         RadiusBar = (SeekBar)findViewById(R.id.SeekbarID); // make seekbar object
         RadiusBar.setOnSeekBarChangeListener(this);
         RadiusBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -64,7 +74,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
                 RadiusText = (TextView) findViewById(R.id.RadiusTextID);
                 RadiusText.setText("Radius:: KM's " + Radius);
                 Log.d(TAG, "" + Radius);
-                Rad = Radius;
+                Rad = Radius;//radius can be accessed outside this activity
 
             }
 
@@ -116,6 +126,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
 
     }
 
+    //skill variable is set and accessed on maps results
     public void addlistenertoradio(){
         radio = (RadioGroup)findViewById(R.id.radioGroup);
         radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -141,6 +152,7 @@ public class SearchActivity extends AppCompatActivity implements SeekBar.OnSeekB
         });
     }
 
+    //saves state of activity if destroyed
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
