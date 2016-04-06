@@ -57,17 +57,9 @@
             android:name=".MapResultsActivity"
             android:label="@string/title_activity_map_results" />
 
-        <service
-            android:name=".FetchAddressIntentService"
-            android:exported="false" />
-
         <activity
             android:name=".SearchActivity"
             android:label="@string/title_activity_search"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ChatActivity"
-            android:label="@string/title_activity_chat"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SettingsActivity"

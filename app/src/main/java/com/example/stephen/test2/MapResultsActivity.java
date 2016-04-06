@@ -72,25 +72,10 @@ import java.util.Map;
 public class MapResultsActivity extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, LocationListener, OnConnectionFailedListener, ResultCallback<LocationSettingsResult> {
 
     private GoogleMap mMap;
-    private GoogleApiClient mGoogleApiClient;
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
-    public Location mLastLocation;
-    //private BroadcastReceiver mResultReceiver;
-    protected LocationRequest mLocationRequest;
-    //protected LocationSettingsRequest mLocationSettingsRequest;
-    //protected Location mCurrentLocation;
-    //protected Boolean mRequestingLocationUpdates;
-    //protected Boolean LocationAsked;
     public static final String TAG = MapResultsActivity.class.getSimpleName();
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
-    //protected LocationManager mLocationManager;
-    //String joined = TextUtils.join(", ", SearchActivity.list);
-    //String joined = Joiner.on("\t").join(SearchActivity.list);
-    //String id, Lat, Long;
 
-    //public static List<String> list2 = new ArrayList<String>();
-    //SearchActivity.list = list2;
-    //public String Skill = SearchActivity.Skill;
     String id;
     String Lat, meLat;
     String Long, meLong;
@@ -158,7 +143,6 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                         final Firebase dref = new Firebase("https://test1-polly.firebaseio.com/users");
                         Query XXref = dref.child("" + myID);
                         XXref.addValueEventListener(new ValueEventListener() {
-
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -221,11 +205,6 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                                                                     double distance = R * c;
 
                                                                     Log.d(TAG, "" + distance);
-                                                            /*
-                                                            mMap.addMarker(new MarkerOptions()
-                                                                    .position(new LatLng(lat, lon))
-                                                                    .title(name));
-                                                            mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));*/
 
                                                                     if (distance <= rad) {
 
@@ -246,13 +225,6 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
 
                                                                         });
 
-                                                                /*
-                                                                MarkerOptions marker = new MarkerOptions()
-                                                                        .position(new LatLng(lat, lon))
-                                                                        .title(name);
-                                                                mMap.addMarker(marker);
-                                                                mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));*/
-                                                                        //.icon(BitmapDescriptorFactory.fromResource(R.drawable.draw)));
                                                                     }
                                                                 }
                                                             }
@@ -329,61 +301,9 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         Log.d(TAG, "" + myID);
 
 
-
-
-
-
-        //Log.d(TAG, "" + joined);
-
         //select user where skill = skill
         //then check if there within the radius
         //if so display them
-
-        //final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");
-        //Firebase Ref = ref.child("users").child("/");
-        //Ref.child("Skills").equals(SearchActivity.list);
-        //startat();
-        //Query Ref = ref.child("users").child("").equalTo("", finalID);
-        //Query queryRef = userRef.orderByChild("Skills").equalTo("", joined);
-        //Query queryRef = userRef.orderByChild("Skills").equalTo("" + SearchActivity.list);
-
-        //getskillID();
-        //getuserdetails();
-        //new com.example.stephen.test2.AsyncTask().execute();
-        //buildGoogleApiClient();
-
-
-
-
-        //final String finalID = id;
-
-
-        //mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-        // LOCATION_REFRESH_DISTANCE, mLocationListener);
-
-        /*
-
-        buildGoogleApiClient();
-        startIntentService();
-        createLocationRequest();
-        buildLocationSettingsRequest();
-        checkLocationSettings();*/
-
-
-        //mRequestingLocationUpdates = true;
-
-        /*
-        mResultReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-            }
-        };
-        IntentFilter filter = new IntentFilter("com.example.stephen.test2.SendBroadcast");
-        registerReceiver(mResultReceiver, filter);*/
-        //mResultReceiver.setReceiver(this);
 
 
         // Here, thisActivity is the current activity
@@ -428,122 +348,19 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
         }
     }
 
-/*
-    protected synchronized void buildGoogleApiClient() {
-        Log.i(TAG, "Building GoogleApiClient");
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
-*/
-
     protected void onStart() {
         //mGoogleApiClient.connect();
         super.onStart();
     }
-    /*
 
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-    }/*
-
-    protected void buildLocationSettingsRequest() {
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        mLocationSettingsRequest = builder.build();
-    }
-
-    protected void checkLocationSettings() {
-        PendingResult<LocationSettingsResult> result =
-                LocationServices.SettingsApi.checkLocationSettings(
-                        mGoogleApiClient,
-                        mLocationSettingsRequest
-                );
-        result.setResultCallback(this);
-    }*/
-/*
-    private final LocationListener mLocationListener = new LocationListener() {
-
-        @Override
-        public void onLocationChanged(final Location location) {
-            //your code here
-            mCurrentLocation = location;
-        }
-    };
-*/
 
 
     @Override
     public void onConnected(Bundle connectionHint) {
 
-        /*
-        createLocationRequest();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (mLastLocation != null) {
-            lat = String.valueOf(mLastLocation.getLatitude());
-            lon = String.valueOf(mLastLocation.getLongitude());
-
-        }
-
-       // mGoogleApiClient.connect();
-        /*
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        //Log.i(TAG, "last location" + mLastLocation);
-        if (mLastLocation != null) {
-            // Determine whether a Geocoder is available.
-            if (!Geocoder.isPresent()) {
-                Toast.makeText(this, R.string.no_geocoder_available,
-                        Toast.LENGTH_LONG).show();
-                //return;
-            }
-
-        }*/
 
     }
 
-    /*
-    protected void startIntentService() {
-        Intent intent = new Intent(this, FetchAddressIntentService.class);
-        intent.putExtra(Constants.RECEIVER, (Parcelable) mResultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
-        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        intent.setAction("com.example.stephen.test2.SendBroadcast");
-        //intent.putExtra("Foo", "Bar");
-        sendBroadcast(intent);
-    }*/
 
     @Override
     public void onConnectionFailed( ConnectionResult connectionResult) {
@@ -555,23 +372,6 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
 
     }
 
-    /*
-    protected void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient,
-                mLocationRequest, this
-        );
-    }*/
 
     @Override
     protected void onPause() {
@@ -592,12 +392,6 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
 
-    /*
-    protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(
-                mGoogleApiClient, this);
-    }*/
-
 
 
     protected void onStop() {
@@ -610,10 +404,6 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
 
@@ -671,29 +461,6 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     public void onLocationChanged(final Location location) {
         //your code here
         //mCurrentLocation = location;
-    }
-
-
-    /*
-
-    public class MyReceiver extends BroadcastReceiver {
-        public MyReceiver() {
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // This method is called when this BroadcastReceiver receives an Intent broadcast.
-            Toast.makeText(context, "Action: " + intent.getAction(), Toast.LENGTH_SHORT).show();
-            Log.i(TAG, "Intent Received");
-        }
-    }*/
-
-    public void getskillID(){
-
-    }
-
-    public void getuserdetails(){
-
     }
 
 

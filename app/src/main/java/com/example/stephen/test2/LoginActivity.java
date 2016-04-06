@@ -91,7 +91,86 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         Firebase.setAndroidContext(this);
 
         if (AccessToken.getCurrentAccessToken() != null){
-            startActivity(new Intent(LoginActivity.this, MapResultsActivity.class));
+            GraphRequest request = GraphRequest.newMeRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(final JSONObject MEobject, GraphResponse response) {
+
+                            String meID = null;
+                            try {
+                                meID = MEobject.getString("id");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d(TAG, meID);
+
+                            String meFName = null;
+                            try {
+                                meFName = MEobject.getString("name");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/users");
+                            final String finalmeID = meID;
+                            final String finalmeFName = meFName;
+
+                            userRef.child(meID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    if (snapshot.getValue() != null) {
+                                        Log.d(TAG, "USER EXISTS");
+
+                                        startActivity(new Intent(LoginActivity.this, MapResultsActivity.class));
+                                        //user exists move to search
+                                    } else {
+                                        //user does not exist create user in db.
+                                        //then move to create profile
+                                        Log.d(TAG, "USER DOES NOT EXIST, CREATING ONE NOW");
+
+                                        //User needs to fill in what they are e.g skills/user
+                                        startActivity(new Intent(LoginActivity.this, CreateProfileActivity.class));
+
+                                        class User {
+                                            private String Lat;
+                                            private String Long;
+                                            private String fullName;
+
+                                            public User() {
+                                            }
+                                            public User(String Lat, String Long, String fullName) {
+                                                this.Lat = Lat;
+                                                this.Long = Long;
+                                                this.fullName = fullName;
+                                            }
+                                            public String getLat() {
+                                                return Lat;
+                                            }
+                                            public String getLong() {
+                                                return Long;
+                                            }
+                                            public String getFullName() {
+                                                return fullName;
+                                            }
+                                        }
+                                        final Firebase ref = new Firebase("https://test1-polly.firebaseio.com/");                                        Firebase Ref = ref.child("users").child("" + finalmeID);
+                                        User meobject = new User("" + lat, "" + lon, "" + finalmeFName);
+                                        ref.setValue(meobject);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(FirebaseError arg0) {
+
+                                }
+                            });
+                        }
+                    });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id, name, picture");
+            request.setParameters(parameters);
+            request.executeAsync();
         }
 
 
@@ -464,7 +543,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         if (mLastLocation != null) {
             lat = String.valueOf(mLastLocation.getLatitude());
             lon = String.valueOf(mLastLocation.getLongitude());
-
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -529,36 +607,37 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         //updateUI();
         Log.d(TAG, lat + ", " + lon);
         final String[] ID = new String[1];
+        if (AccessToken.getCurrentAccessToken() != null) {
 
-        GraphRequest request = GraphRequest.newMeRequest(
-                AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(final JSONObject Fobject, GraphResponse response) {
+            GraphRequest request = GraphRequest.newMeRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(final JSONObject Fobject, GraphResponse response) {
 
-                        ID[0] = null;
-                        try {
-                            ID[0] = Fobject.getString("id");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            ID[0] = null;
+                            try {
+                                ID[0] = Fobject.getString("id");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d(TAG, ID[0]);
+
+                            //updating lat and lon in database on locationchanged
+                            final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/");
+                            Firebase Ref = userRef.child("users").child("" + ID.toString());
+                            //Query rRef = Ref.equalTo("", finalID);
+                            Ref.child("lat").setValue("" + lat);
+                            Ref.child("long").setValue("" + lon);
+
+
                         }
-                        Log.d(TAG, ID[0]);
-
-                        //updating lat and lon in database on locationchanged
-                        final Firebase userRef = new Firebase("https://test1-polly.firebaseio.com/");
-                        Firebase Ref = userRef.child("users").child("" + ID.toString());
-                        //Query rRef = Ref.equalTo("", finalID);
-                        Ref.child("lat").setValue("" + lat);
-                        Ref.child("long").setValue("" + lon);
-
-
-
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id");
-        request.setParameters(parameters);
-        request.executeAsync();
+                    });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id");
+            request.setParameters(parameters);
+            request.executeAsync();
+        }
     }
 
 
