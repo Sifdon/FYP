@@ -11,5 +11,44 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.stephen.test2.ResultProfileActivity"
     tools:showIn="@layout/activity_result_profile">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Call"
+        android:id="@+id/Phonebutton"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="184dp" />
+    <TextView
+        android:id="@+id/NameID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignParentStart="true">
+    </TextView>
+    <TextView
+        android:id="@+id/PhoneID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/NameID"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="43dp">
+    </TextView>
+    <TextView
+        android:id="@+id/BioID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bio"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/PhoneID"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="47dp"
+        android:layout_toStartOf="@+id/Phonebutton"
+        android:layout_alignBottom="@+id/Phonebutton">
+    </TextView>
 
 </RelativeLayout>

@@ -81,6 +81,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
     String Long, meLong;
     public int rad = SearchActivity.Rad;
     public String myID;
+    static String getID;
 
 
     @Override
@@ -216,7 +217,7 @@ public class MapResultsActivity extends FragmentActivity implements OnMapReadyCa
                                                                             @Override
                                                                             public boolean onMarkerClick(Marker arg0) {
                                                                                 if (arg0.getTitle().equals(name)) {
-                                                                                    String getID = id;
+                                                                                    getID = id;
                                                                                     startActivity(new Intent(MapResultsActivity.this, ResultProfileActivity.class));
 
                                                                                 }

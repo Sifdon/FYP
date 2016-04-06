@@ -192,14 +192,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
 
         //adding location updates to this activity-----------------------------
         buildGoogleApiClient();
-        /*
-        createLocationRequest();
-        periodicLocationUpdates();
-        displayLocation();
-        buildLocationSettingsRequest();
-        checkLocationSettings();
-
-        */
         //Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(LoginActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -228,6 +220,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
 
 
 
+        /*
         final Button btn = (Button) findViewById(R.id.mapbutton);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,7 +245,7 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                 startActivity(new Intent(LoginActivity.this, CreateProfileActivity.class));
             }
         });
-
+*/
 
         onFacebookAccessTokenChange(AccessToken.getCurrentAccessToken());
 
@@ -414,51 +407,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
         //stop client
     }
 
-    /*
-    private void periodicLocationUpdates() {
-        if (!mRequestingLocationUpdates) {
-
-            mRequestingLocationUpdates = true;
-            // Starting the location updates
-            startLocationUpdates();
-            Log.d(TAG, "Periodic location updates started!");
-
-        } else {
-            mRequestingLocationUpdates = false;
-            stopLocationUpdates();
-            Log.d(TAG, "Periodic location updates stopped!");
-        }
-    }
-
-    private void displayLocation() {
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if (mLastLocation != null) {
-            double latitude = mLastLocation.getLatitude();
-            double longitude = mLastLocation.getLongitude();
-
-            Log.d(TAG, String.format("%s, %s", latitude, longitude));
-            //bash.setText(String.format("%s, %s", latitude, longitude));
-            //bash.setText( String.format( "Value of a: %.2f", latitude ) );
-
-
-        } else {
-            Log.d(TAG, "not working");
-
-            //bash.setText("Couldn't get the location. Make sure location is enabled on the device");
-        }
-    }*/
 
     private void loadPermissions(String perm,int requestCode) {
         if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
@@ -514,24 +462,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
 
 
 
-    /*
-    protected void buildLocationSettingsRequest() {
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        mLocationSettingsRequest = builder.build();
-    }
-
-    protected void checkLocationSettings() {
-        PendingResult<LocationSettingsResult> result =
-                LocationServices.SettingsApi.checkLocationSettings(
-                        mGoogleApiClient,
-                        mLocationSettingsRequest
-                );
-        result.setResultCallback(this);
-    }*/
-
-
-
     @Override
     public void onConnected(Bundle connectionHint) {
 
@@ -556,18 +486,6 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
             return;
         }
 
-        /*
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        //Log.i(TAG, "last location" + mLastLocation);
-        if (mLastLocation != null) {
-            // Determine whether a Geocoder is available.
-            if (!Geocoder.isPresent()) {
-                Toast.makeText(this, R.string.no_geocoder_available,
-                        Toast.LENGTH_LONG).show();
-                //return;
-            }
-
-        }*/
 
     }
 
